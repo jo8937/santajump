@@ -5,10 +5,8 @@ import { MainScene } from "./scenes/mainScene";
 
 // main game configuration
 const config: GameConfig = {
-  //width: 600,
-  //height: 800,
-  width: window.innerWidth,
-  height: window.innerHeight,
+  width: 600,
+  height: 800,
   type: Phaser.AUTO,
   parent: "game",
   scene: MainScene,
@@ -19,6 +17,11 @@ const config: GameConfig = {
     }
   }
 };
+
+if(window.innerWidth && window.devicePixelRatio){
+  config.width = window.innerWidth * window.devicePixelRatio;
+  config.height = window.innerHeight * window.devicePixelRatio
+}
 
 // game class
 export class Game extends Phaser.Game {

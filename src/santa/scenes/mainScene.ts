@@ -18,6 +18,6 @@ export class MainScene extends Phaser.Scene {
   }
 
   create(): void {
-    this.phaserSprite = this.add.sprite(600, 600, "logo");
+    //this.phaserSprite = this.add.sprite(600, 600, "logo");
   }
 }
