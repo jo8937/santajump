@@ -5,8 +5,10 @@ import { MainScene } from "./scenes/mainScene";
 
 // main game configuration
 const config: GameConfig = {
-  width: 800,
-  height: 1200,
+  //width: 600,
+  //height: 800,
+  width: window.innerWidth,
+  height: window.innerHeight,
   type: Phaser.AUTO,
   parent: "game",
   scene: MainScene,
