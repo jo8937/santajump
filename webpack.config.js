@@ -1,6 +1,7 @@
 var path = require('path');
 var pathToPhaser = path.join(__dirname, '/node_modules/phaser/');
 var phaser = path.join(pathToPhaser, 'dist/phaser.js');
+var UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
   entry: './src/santa/game.ts',
@@ -26,5 +27,17 @@ module.exports = {
     alias: {
       phaser: phaser
     }
+  },
+  optimization: {
+      minimizer: [
+          new UglifyJsPlugin({
+              uglifyOptions: {
+                  output: {
+                      comments: false,
+                  }
+              },
+              extractComments: true, // /(?:^!|@(?:license|preserve))/i
+          })
+      ]
   }
 };
