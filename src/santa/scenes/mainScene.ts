@@ -14,10 +14,11 @@ export class MainScene extends Phaser.Scene {
   }
 
   preload(): void {
-    this.load.image("logo", "./assets/santa-sd-720.png");
+    //this.load.image("logo", "./assets/santa-sd-720.png");
+    this.load.image("logo", "./assets/dummy.png");
   }
 
   create(): void {
-    //this.phaserSprite = this.add.sprite(600, 600, "logo");
+    this.phaserSprite = this.add.sprite(600, 600, "logo");
   }
 }

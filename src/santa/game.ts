@@ -5,8 +5,9 @@ import { MainScene } from "./scenes/mainScene";
 
 // main game configuration
 const config: GameConfig = {
-  width: 600,
-  height: 800,
+  width: 360,
+  height: 630,
+  backgroundColor: "#EFEFEF",
   type: Phaser.AUTO,
   parent: "game",
   scene: MainScene,
@@ -18,9 +19,10 @@ const config: GameConfig = {
   }
 };
 
-if(window.innerWidth && window.devicePixelRatio){
-  config.width = window.innerWidth * window.devicePixelRatio;
-  config.height = window.innerHeight * window.devicePixelRatio
+if(window.innerWidth){
+  // screen.width 
+  config.width = window.innerWidth;
+  config.height = window.innerHeight;
 }
 
 // game class
