@@ -78,7 +78,9 @@ export class Santa extends Phaser.GameObjects.Sprite {
             gyro.startTracking(function(o) {
                 // updating player velocity
                 if(o && o.gamma){
-                    this.g = o.gamma;
+                    let gm = o.gamma;
+                    console.log(gm);
+                    this.g = gm;
                 }
                 //player.body.velocity.y += o.beta/20;
             });	
