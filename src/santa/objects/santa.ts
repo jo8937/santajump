@@ -1,3 +1,5 @@
+declare var gyro: any;
+
 export class Santa extends Phaser.GameObjects.Sprite {
     private jumpKey: Phaser.Input.Keyboard.Key;
     private anim: Phaser.Tweens.Tween[];
@@ -65,12 +67,23 @@ export class Santa extends Phaser.GameObjects.Sprite {
       this.cursors = params.scene.input.keyboard.createCursorKeys();
 
       params.scene.add.existing(this);
-      window.addEventListener("devicemotion", (ev) =>{
-            this.g = (<any>ev).gamma;
-      }, true);
+      this.addGyro();
 
     }
 
+    public addGyro():void{
+        if(gyro){
+            gyro.frequency = 10;
+            // start gyroscope detection
+            gyro.startTracking(function(o) {
+                // updating player velocity
+                if(o && o.gamma){
+                    this.g = o.gamma;
+                }
+                //player.body.velocity.y += o.beta/20;
+            });	
+        }
+    }
 
   public handleInput(): void {
     if (this.cursors.right.isDown || this.g < 0) {
