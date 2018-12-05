@@ -16,6 +16,9 @@ const config: GameConfig = {
     arcade: {
       gravity: { y: 200 }
     }
+  },
+  input: {
+    activePointers: 1
   }
 };
 

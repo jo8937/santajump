@@ -79,9 +79,7 @@ export class Santa extends Phaser.GameObjects.Sprite {
                 // updating player velocity
                 return function(o){
                     if(o && o.gamma){
-                        let gm = o.gamma;
-                        console.log(gm);
-                        parent.g = gm;
+                        parent.g = o.gamma;
                     }
                 };
                 //player.body.velocity.y += o.beta/20;
