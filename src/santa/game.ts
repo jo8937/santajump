@@ -5,8 +5,8 @@ import { MainScene } from "./scenes/mainScene";
 
 // main game configuration
 const config: GameConfig = {
-  width: 375,
-  height: 580,
+  width: 400,
+  height: 600,
   backgroundColor: "#FFFFFF",
   type: Phaser.AUTO,
   parent: "game",
@@ -30,18 +30,13 @@ export class Game extends Phaser.Game {
 window.onload = () => {
 
   if(window.innerWidth && window.innerHeight){
-    // X 375 x 812 (635)
-    // XR 414 x 896
-    // nexus 412 x 732
-    // note9 360 x 740
-    // Max : 768 x 1024
-    const MAX_HEIGHT = 1024;
-    const MAX_WIDTH = 768;
-    config.width = window.innerWidth < MAX_WIDTH ? window.innerWidth : MAX_WIDTH;  
+    // X 375 x 812 (635)     // XR 414 x 896     // nexus 412 x 732     // note9 360 x 740     // Max : 768 x 1024
+    const MAX_HEIGHT = 800;
+    //const MAX_WIDTH = 768;
+    //config.width = window.innerWidth < MAX_WIDTH ? window.innerWidth : MAX_WIDTH;  
     config.height = window.innerHeight < MAX_HEIGHT ? window.innerHeight : MAX_HEIGHT;  
   }
   
-
   var game = new Game(config);
 };
 
