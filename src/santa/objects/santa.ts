@@ -6,6 +6,7 @@ export class Santa extends Phaser.GameObjects.Sprite {
     private isDead: boolean = false;
     private cursors : Phaser.Input.Keyboard.CursorKeys;
     private pointers : Phaser.Input.Pointer;
+    private isPointerDown : boolean = false;
     private vec : Vector2Like = {x:0,y:100};
     private g : number = 0;
     
@@ -65,10 +66,12 @@ export class Santa extends Phaser.GameObjects.Sprite {
       );
   
       this.cursors = params.scene.input.keyboard.createCursorKeys();
-      this.pointers = params.scene.input.activePointer;
-      params.scene.add.existing(this);
+      //this.pointers = params.scene.input.activePointer;
+      
       this.addGyro();
-
+      params.scene.input.on('pointerdown', (pointer) => { this.isPointerDown = true; });
+      params.scene.input.on('pointerup', (pointer) => { this.isPointerDown = false; });
+     params.scene.add.existing(this);
     }
 
     public addGyro():void{
@@ -85,10 +88,11 @@ export class Santa extends Phaser.GameObjects.Sprite {
                 //player.body.velocity.y += o.beta/20;
             }(this));	
         }
+        
     }
 
   public handleInput(): void {
-    if(this.cursors.up.isDown || this.pointers.isDown) {
+    if(this.cursors.up.isDown || this.isPointerDown) {
         (<Phaser.Physics.Arcade.Body> this.body).setVelocityY(-this.vec.y);
         this.vec.y+=10;
     }else if (this.cursors.right.isDown || this.g > 0) {
