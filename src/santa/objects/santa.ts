@@ -96,9 +96,11 @@ export class Santa extends Phaser.GameObjects.Sprite {
         (<Phaser.Physics.Arcade.Body> this.body).setVelocityY(-this.vec.y);
         this.vec.y+=10;
     }else if (this.cursors.right.isDown || this.g > 0) {
+        this.vec.y = 100;
         (<Phaser.Physics.Arcade.Body> this.body).setVelocityX(300);
         this.anims.play('right',true);
     }else if (this.cursors.left.isDown || this.g < 0) {
+        this.vec.y = 100;
         (<Phaser.Physics.Arcade.Body> this.body).setVelocityX(-300);
         this.anims.play('left',true);
     }else if(this.cursors.down.isDown) {
