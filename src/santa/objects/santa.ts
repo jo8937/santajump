@@ -88,15 +88,15 @@ export class Santa extends Phaser.GameObjects.Sprite {
     }
 
   public handleInput(): void {
-    if (this.cursors.right.isDown || this.g > 0) {
-        (<Phaser.Physics.Arcade.Body> this.body).setVelocityX(300);
-        this.anims.play('right',true);
-    } else if (this.cursors.left.isDown || this.g < 0) {
-        (<Phaser.Physics.Arcade.Body> this.body).setVelocityX(-300);
-        this.anims.play('left',true);
-    }else if(this.cursors.up.isDown || this.pointers.isDown) {
+    if(this.cursors.up.isDown || this.pointers.isDown) {
         (<Phaser.Physics.Arcade.Body> this.body).setVelocityY(-this.vec.y);
         this.vec.y+=10;
+    }else if (this.cursors.right.isDown || this.g > 0) {
+        (<Phaser.Physics.Arcade.Body> this.body).setVelocityX(300);
+        this.anims.play('right',true);
+    }else if (this.cursors.left.isDown || this.g < 0) {
+        (<Phaser.Physics.Arcade.Body> this.body).setVelocityX(-300);
+        this.anims.play('left',true);
     }else if(this.cursors.down.isDown) {
         (<Phaser.Physics.Arcade.Body> this.body).setVelocityY(this.vec.y);
         this.vec.y = 100;
