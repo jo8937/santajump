@@ -81,7 +81,7 @@ export class MainScene extends Phaser.Scene {
       y: 100,
       key: 'santa'
     });
-   // this.c = this.input.keyboard.createCursorKeys();
+
   }
 
 

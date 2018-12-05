@@ -4,6 +4,9 @@ export class Santa extends Phaser.GameObjects.Sprite {
     private isDead: boolean = false;
     private cursors : Phaser.Input.Keyboard.CursorKeys;
 
+    private vec : Vector2Like = {x:0,y:100};
+    private g : number = 0;
+    
     public getDead(): boolean {
       return this.isDead;
     }
@@ -37,10 +40,12 @@ export class Santa extends Phaser.GameObjects.Sprite {
 
       // image
       //this.setScale(3);
-      //this.setOrigin(0, 0);
+      this.setOrigin(0, 0);
       // physics
       params.scene.physics.world.enable(this);
-        
+      (<Phaser.Physics.Arcade.Body> this.body).setBounce(0,0);
+      (<Phaser.Physics.Arcade.Body> this.body).setCollideWorldBounds(true);
+          
       // animations & tweens
       this.anim = [];
     //   this.anim.push(
@@ -60,21 +65,26 @@ export class Santa extends Phaser.GameObjects.Sprite {
       this.cursors = params.scene.input.keyboard.createCursorKeys();
 
       params.scene.add.existing(this);
-      
+      window.addEventListener("devicemotion", (ev) =>{
+            this.g = (<any>ev).gamma;
+      }, true);
+
     }
 
 
   public handleInput(): void {
-    if (this.cursors.right.isDown) {
+    if (this.cursors.right.isDown || this.g < 0) {
         (<Phaser.Physics.Arcade.Body> this.body).setVelocityX(300);
         this.anims.play('right',true);
-    } else if (this.cursors.left.isDown) {
+    } else if (this.cursors.left.isDown || this.g > 0) {
         (<Phaser.Physics.Arcade.Body> this.body).setVelocityX(-300);
         this.anims.play('left',true);
     }else if(this.cursors.up.isDown) {
-        (<Phaser.Physics.Arcade.Body> this.body).setVelocityY(-10);
+        (<Phaser.Physics.Arcade.Body> this.body).setVelocityY(-this.vec.y);
+        this.vec.y+=10;
     }else if(this.cursors.down.isDown) {
-        (<Phaser.Physics.Arcade.Body> this.body).setVelocityY(10);
+        (<Phaser.Physics.Arcade.Body> this.body).setVelocityY(this.vec.y);
+        this.vec.y = 100;
     }
 
     // if (this.jumpKey.isDown) {
