@@ -33,7 +33,7 @@ config = {
 module.exports = (env, argv) => {
   if (argv.mode === 'development') {
     console.log("...dev mode...")
-    config.devtool = "inline-source-map";
+    config.devtool = "eval-source-map";
   }
 
   if (argv.mode === 'production') {
