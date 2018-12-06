@@ -70,7 +70,7 @@ export class MainScene extends Phaser.Scene {
         speedX: { min: -50, max: 50 },
         scale: { start: 0.1, end: 0.3 },
         quantity: 0.1,
-        gravityY: 2,
+        gravityY: 50,
         blendMode: Phaser.BlendModes.NORMAL,
         rotate: { min: 0, max: 100 },
     });

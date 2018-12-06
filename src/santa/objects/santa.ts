@@ -7,7 +7,7 @@ export class Santa extends Phaser.GameObjects.Sprite {
     private cursors : Phaser.Input.Keyboard.CursorKeys;
     private pointers : Phaser.Input.Pointer;
     private isPointerDown : boolean = false;
-    private vec : Vector2Like = {x:0,y:100};
+    private vec : Vector2Like = {x:0,y:500};
     private g : number = 0;
     
     public getDead(): boolean {
@@ -48,7 +48,8 @@ export class Santa extends Phaser.GameObjects.Sprite {
       params.scene.physics.world.enable(this);
       (<Phaser.Physics.Arcade.Body> this.body).setBounce(0,0);
       (<Phaser.Physics.Arcade.Body> this.body).setCollideWorldBounds(true);
-          
+      (<Phaser.Physics.Arcade.Body> this.body).setAllowGravity(true);
+      
       // animations & tweens
       this.anim = [];
     //   this.anim.push(
