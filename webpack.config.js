@@ -3,7 +3,7 @@ var pathToPhaser = path.join(__dirname, '/node_modules/phaser/');
 var phaser = path.join(pathToPhaser, 'dist/phaser.js');
 var UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
-module.exports = {
+config = {
   entry: './src/santa/game.ts',
   output: {
     path: path.resolve(__dirname, 'build'),
@@ -21,23 +21,36 @@ module.exports = {
     host: '127.0.0.1',
     port: 3002,
     open: true
-  },
+  },  
   resolve: {
     extensions: ['.ts', '.js'],
     alias: {
       phaser: phaser
     }
-  },
-  optimization: {
-      minimizer: [
-          new UglifyJsPlugin({
-              uglifyOptions: {
-                  output: {
-                      comments: false,
-                  }
-              },
-              extractComments: true, // /(?:^!|@(?:license|preserve))/i
-          })
-      ]
   }
 };
+
+module.exports = (env, argv) => {
+  if (argv.mode === 'development') {
+    console.log("...dev mode...")
+    config.devtool = "inline-source-map";
+  }
+
+  if (argv.mode === 'production') {
+    console.log("...Production mode...")
+    config.optimization = {
+        minimizer: [
+            new UglifyJsPlugin({
+                uglifyOptions: {
+                    output: {
+                        comments: false,
+                    }
+                },
+                extractComments: true, // /(?:^!|@(?:license|preserve))/i
+            })
+        ]
+    };
+  }  
+
+  return config;
+}
