@@ -55,6 +55,7 @@ export class Santa extends Phaser.GameObjects.Sprite {
     params.scene.physics.world.enable(this);
 
     this.setOrigin(0, 0);
+    //this.setScale(0.5);
     (<Phaser.Physics.Arcade.Body>this.body).setBounce(0, 0);
     (<Phaser.Physics.Arcade.Body>this.body).setCollideWorldBounds(true);
     (<Phaser.Physics.Arcade.Body>this.body).setAllowGravity(true);

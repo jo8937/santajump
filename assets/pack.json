@@ -8,8 +8,8 @@
         },
         {
           "type": "image",
-          "key": "scgfull",
-          "url": "assets/chara-sampling-27.png"
+          "key": "scg",
+          "url": "assets/chara-full.png"
         },
         {
           "type": "spritesheet",
@@ -40,12 +40,7 @@
               "frameHeight": 17
             }
         }
-        ,
-        {
-            "type": "audio",
-            "key": "bgm",
-            "url": "assets/bgm.mp3"
-        }
+        
       ]
     }
   }

@@ -2,6 +2,8 @@
 
 import "phaser";
 import { MainScene } from "./scenes/mainScene";
+import { BootScene } from "./scenes/bootScene";
+import { TitleScene } from "./scenes/titleScene";
 
 // main game configuration
 const config: GameConfig = {
@@ -10,7 +12,7 @@ const config: GameConfig = {
   backgroundColor: "#FFFFFF",
   type: Phaser.AUTO,
   parent: "game",
-  scene: MainScene,
+  scene: [BootScene, TitleScene, MainScene],
   physics: {
     default: "arcade",
     arcade: {
@@ -18,6 +20,10 @@ const config: GameConfig = {
     }
   },
   input: {
+    keyboard: true,
+    mouse: true,
+    touch: true,
+    gamepad: false,
     activePointers: 1
   }
 };
