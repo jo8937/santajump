@@ -1,0 +1,52 @@
+{
+    "preload": {
+      "files": [
+        {
+          "type": "image",
+          "key": "bg",
+          "url": "assets/bg.png"
+        },
+        {
+          "type": "image",
+          "key": "scgfull",
+          "url": "assets/chara-sampling-27.png"
+        },
+        {
+          "type": "spritesheet",
+          "key": "santa",
+          "url": "assets/santa-sd-720.png",
+          "frameConfig": {
+            "frameWidth": 80,
+            "frameHeight": 97
+          }
+        }
+        ,
+        {
+          "type": "spritesheet",
+          "key": "panel",
+          "url": "assets/snow-panel.png",
+          "frameConfig": {
+            "frameWidth": 100,
+            "frameHeight": 18
+          }
+        }
+        ,
+        {
+            "type": "spritesheet",
+            "key": "snowflakes",
+            "url": "assets/external/snowflakes.png",
+            "frameConfig": {
+              "frameWidth": 17,
+              "frameHeight": 17
+            }
+        }
+        ,
+        {
+            "type": "audio",
+            "key": "bgm",
+            "url": "assets/bgm.mp3"
+        }
+      ]
+    }
+  }
+  
