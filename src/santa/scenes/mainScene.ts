@@ -59,10 +59,10 @@ export class MainScene extends Phaser.Scene {
         lifespan: 5000,
         speedY: { min: 100, max: 200 },
         speedX: { min: -50, max: 50 },
-        scale: { start: 0.5, end: 1 },
+        scale: { start: 0.2, end: 1 },
         quantity: 0.1,
-        gravityY: 5,
-        blendMode: Phaser.BlendModes.NORMAL,
+        gravityY: 11,
+        blendMode: Phaser.BlendModes.LUMINOSITY,
         rotate: { min: 0, max: 100 },
     });
   }
