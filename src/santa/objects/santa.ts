@@ -1,4 +1,5 @@
 declare var gyro: any;
+import { MainScene } from "../scenes/mainScene";
 
 export class Santa extends Phaser.GameObjects.Sprite {
   private anim: Phaser.Tweens.Tween[];
@@ -12,14 +13,14 @@ export class Santa extends Phaser.GameObjects.Sprite {
   private isJumping: boolean = false;
   private isPointerDown: boolean = false;
 
-  private velDefault = 500;
+  private velDefault = 200;
   private velDur = 200;
   private velMinLimit = 1000;
   private vec: Vector2Like = { x: 0, y: 100 };
   private g: number = 0;
 
   private aBody: Phaser.Physics.Arcade.Body = null;
-
+  private aScene: MainScene = null;
   public getDead(): boolean {
     return this.isDead;
   }
@@ -58,6 +59,7 @@ export class Santa extends Phaser.GameObjects.Sprite {
 
   constructor(params) {
     super(params.scene, params.x, params.y, params.key, params.frame);
+    this.aScene = <MainScene> params.scene;
 
     this.initAnimation()
 
@@ -66,7 +68,7 @@ export class Santa extends Phaser.GameObjects.Sprite {
     this.aBody = <Phaser.Physics.Arcade.Body> this.body;
     this.setOrigin(0, 0);
     this.setScale(0.5);
-    this.aBody.setBounce(0, 0);
+    this.aBody.setBounce(1, 0);
     this.aBody.setCollideWorldBounds(true);
     this.aBody.setAllowGravity(true);
 
@@ -105,6 +107,9 @@ export class Santa extends Phaser.GameObjects.Sprite {
       this.isPointerDown = false;
     });
     params.scene.add.existing(this);
+
+    this.goRight();
+    
   }
 
   public addGyro(): void {
@@ -131,6 +136,7 @@ export class Santa extends Phaser.GameObjects.Sprite {
   
   private inputRight(){
     return this.rightKey.isDown || this.g > 0;
+    
   }
 
   private inputJump(){
@@ -165,12 +171,20 @@ export class Santa extends Phaser.GameObjects.Sprite {
   }
 
   private goLeft(){
-    this.aBody.setVelocityX(-300);
-    this.anims.play("left", true);
+    this.aBody.setVelocityX(-this.velDefault);
+    this.setLeft();
   }
 
   private goRight(){
-    this.aBody.setVelocityX(300);
+    this.aBody.setVelocityX(this.velDefault);
+    this.setRight();
+  }
+
+  private setLeft(){
+    this.anims.play("left", true);
+  }
+
+  private setRight(){
     this.anims.play("right", true);
   }
 
@@ -181,15 +195,29 @@ export class Santa extends Phaser.GameObjects.Sprite {
     }
     this.neutral(fire_jump);
     
-    if (this.inputRight()) {
-      this.goRight();    
-    }else if (this.inputLeft()) {
-      this.goLeft();
-    }
+    // if (this.inputRight()) {
+    //   this.goRight();    
+    // }else if (this.inputLeft()) {
+    //   this.goLeft();
+    // }
   }
 
   public checkState(){
-    
+    {
+      if(this.aBody.velocity.x > 0){
+        this.setRight();
+      }else if(this.aBody.velocity.x < 0){
+        this.setLeft();
+      }else{
+        this.goRight();
+      }
+    }
+
+    if(this.aBody.y < this.aScene.scrollBorderLineY){
+      //this.aScene.
+      this.aScene.scrollBackground(this.aBody.y);
+    }
+
   }
 
   update(): void {

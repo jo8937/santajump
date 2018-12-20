@@ -14,7 +14,7 @@ export class Panel extends Phaser.GameObjects.Sprite {
       this.setOrigin(0, 0);
 
       let abody = <Phaser.Physics.Arcade.Body>this.body;
-      abody.setBounce(0, 0);
+      abody.setBounce(1, 1);
       abody.setCollideWorldBounds(true);
       abody.setAllowGravity(false);
       abody.setImmovable(true);

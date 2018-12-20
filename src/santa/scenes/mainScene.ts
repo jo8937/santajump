@@ -12,7 +12,7 @@ export class MainScene extends Phaser.Scene {
 
   // Back Ground
   private bg: Phaser.GameObjects.TileSprite;
-  
+  public scrollBorderLineY : integer = 200;
   // variables
   private timer: Phaser.Time.TimerEvent;
   private score: number;
@@ -73,7 +73,7 @@ export class MainScene extends Phaser.Scene {
     this.bg = this.add.tileSprite(this.sys.canvas.width / 2, this.sys.canvas.height / 2, this.sys.canvas.width, this.sys.canvas.height, "bg");
     //let chara = this.add.image(200,0,"scg",2);
     //let panels = this.physics.add.staticGroup();
-
+    
     this.santa = new Santa({
       scene: this,
       x: 50,
@@ -96,6 +96,9 @@ export class MainScene extends Phaser.Scene {
     this.santa.update();
   }
 
+  public scrollBackground(upY : integer) : void{
+    this.bg.setTilePosition(this.bg.tilePositionX,  upY);
+  }
 
   setScore(): void{
     // update the score
@@ -106,11 +109,11 @@ export class MainScene extends Phaser.Scene {
 
   generatePanels(): void{
     
-    let mintop = this.sys.canvas.height / 2;
+    let mintop = this.sys.canvas.height / 4;
     // randomly pick a number between 1 and 5
-    for(let i=0; i < 3; i++){
+    for(let i=0; i < 10; i++){
       let x = Math.floor(Math.random() * this.sys.canvas.width);
-      let y = mintop + Math.floor(Math.random() * (2 * this.sys.canvas.height / 3));
+      let y = mintop + Math.floor(Math.random() * (3 * this.sys.canvas.height / 4));
   
       this.generateOnePanel(x,y, 0)  
     }
