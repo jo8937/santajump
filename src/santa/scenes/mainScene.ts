@@ -93,7 +93,7 @@ export class MainScene extends Phaser.Scene {
   }
 
   update(): void{
-    this.santa.handleInput();
+    this.santa.update();
   }
 
 
@@ -106,10 +106,11 @@ export class MainScene extends Phaser.Scene {
 
   generatePanels(): void{
     
+    let mintop = this.sys.canvas.height / 2;
     // randomly pick a number between 1 and 5
     for(let i=0; i < 3; i++){
       let x = Math.floor(Math.random() * this.sys.canvas.width);
-      let y = Math.floor(Math.random() * this.sys.canvas.height);
+      let y = mintop + Math.floor(Math.random() * (2 * this.sys.canvas.height / 3));
   
       this.generateOnePanel(x,y, 0)  
     }

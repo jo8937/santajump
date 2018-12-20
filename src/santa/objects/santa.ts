@@ -1,14 +1,20 @@
 declare var gyro: any;
 
 export class Santa extends Phaser.GameObjects.Sprite {
-  private jumpKey: Phaser.Input.Keyboard.Key;
   private anim: Phaser.Tweens.Tween[];
   private isDead: boolean = false;
-  private cursors: Phaser.Input.Keyboard.CursorKeys;
+  //private cursors: Phaser.Input.Keyboard.CursorKeys;
   private pointers: Phaser.Input.Pointer;
+  private jumpKey: Phaser.Input.Keyboard.Key;
+  private leftKey: Phaser.Input.Keyboard.Key;
+  private rightKey: Phaser.Input.Keyboard.Key;
+
+  private isJumping: boolean = false;
   private isPointerDown: boolean = false;
-  private vec: Vector2Like = { x: 0, y: 500 };
+  private vec: Vector2Like = { x: 0, y: 1200 };
   private g: number = 0;
+
+  private aBody: Phaser.Physics.Arcade.Body = null;
 
   public getDead(): boolean {
     return this.isDead;
@@ -53,12 +59,12 @@ export class Santa extends Phaser.GameObjects.Sprite {
 
     // physics
     params.scene.physics.world.enable(this);
-
+    this.aBody = <Phaser.Physics.Arcade.Body> this.body;
     this.setOrigin(0, 0);
-    //this.setScale(0.5);
-    (<Phaser.Physics.Arcade.Body>this.body).setBounce(0, 0);
-    (<Phaser.Physics.Arcade.Body>this.body).setCollideWorldBounds(true);
-    (<Phaser.Physics.Arcade.Body>this.body).setAllowGravity(true);
+    this.setScale(0.5);
+    this.aBody.setBounce(0, 0);
+    this.aBody.setCollideWorldBounds(true);
+    this.aBody.setAllowGravity(true);
 
     // animations & tweens
     this.anim = [];
@@ -71,12 +77,21 @@ export class Santa extends Phaser.GameObjects.Sprite {
     //   );
 
     // input
+
     this.jumpKey = params.scene.input.keyboard.addKey(
       Phaser.Input.Keyboard.KeyCodes.SPACE
     );
+    this.leftKey = params.scene.input.keyboard.addKey(
+      Phaser.Input.Keyboard.KeyCodes.LEFT
+    );
+    this.rightKey = params.scene.input.keyboard.addKey(
+      Phaser.Input.Keyboard.KeyCodes.RIGHT
+    );
+    this.jumpKey.duration = 10
 
-    this.cursors = params.scene.input.keyboard.createCursorKeys();
-    //this.pointers = params.scene.input.activePointer;
+    //this.cursors = params.scene.input.keyboard.createCursorKeys();
+    this.pointers = params.scene.input.activePointer;
+    //params.scene.input.keyboard.addKeyCapture([ Phaser.Input.Keyboard. .LEFT, Phaser.Keyboard.RIGHT, Phaser.Keyboard.SPACEBAR ]);
 
     this.addGyro();
     params.scene.input.on("pointerdown", pointer => {
@@ -106,32 +121,75 @@ export class Santa extends Phaser.GameObjects.Sprite {
     }
   }
 
-  public handleInput(): void {
-    if (this.cursors.up.isDown || this.isPointerDown) {
-      (<Phaser.Physics.Arcade.Body>this.body).setVelocityY(-this.vec.y);
-      this.vec.y += 10;
-    } else if (this.cursors.right.isDown || this.g > 0) {
-      this.vec.y = 100;
-      (<Phaser.Physics.Arcade.Body>this.body).setVelocityX(300);
-      this.anims.play("right", true);
-    } else if (this.cursors.left.isDown || this.g < 0) {
-      this.vec.y = 100;
-      (<Phaser.Physics.Arcade.Body>this.body).setVelocityX(-300);
-      this.anims.play("left", true);
-    } else if (this.cursors.down.isDown) {
-      (<Phaser.Physics.Arcade.Body>this.body).setVelocityY(this.vec.y);
-      this.vec.y = 100;
-    }
+  private inputLeft(){
+    return this.leftKey.isDown || this.g < 0;
+  }
+  
+  private inputRight(){
+    return this.rightKey.isDown || this.g > 0;
+  }
 
-    // if (this.jumpKey.isDown) {
-    //     this.flap();
-    //   }
+  private inputJump(){
+    return (this.isPointerDown || this.jumpKey.isDown);
+  }
+
+  private jump(){
+    if(!this.isJumping){
+      this.aBody.setVelocityY(-this.vec.y);
+      this.isJumping = true;
+    }
+  }
+
+  private land(jumpingInput: boolean){
+    if(jumpingInput){
+      // 
+    }else{
+      if(this.isJumping){
+        if(this.aBody.velocity.y < 0){
+          this.aBody.setVelocityY(this.aBody.velocity.y + 100);
+        }
+      }
+
+      if(this.aBody.blocked.down || this.aBody.velocity.y == 0){
+        this.isJumping = false
+      }
+    }
+  }
+
+  private goLeft(){
+    this.aBody.setVelocityX(-300);
+    this.anims.play("left", true);
+  }
+
+  private goRight(){
+    this.aBody.setVelocityX(300);
+    this.anims.play("right", true);
+  }
+
+  public checkInput(): void {
+    let fire_jump =  this.inputJump()
+    if (fire_jump) { 
+      this.jump();
+    }
+    this.land(fire_jump);
+    
+    if (this.inputRight()) {
+      this.goRight();    
+    }else if (this.inputLeft()) {
+      this.goLeft();
+    }
+  }
+
+  public checkState(){
+    
   }
 
   update(): void {
-    //this.handleInput();
-    //this.isOffTheScreen();
+    this.checkInput();
+    this.checkState();
   }
+
+
 
   private isOffTheScreen(): void {
     if (this.y + this.height > this.scene.sys.canvas.height) {

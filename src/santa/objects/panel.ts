@@ -1,7 +1,7 @@
 export class Panel extends Phaser.GameObjects.Sprite {
     constructor(params) {
       super(params.scene, params.x, params.y, params.key, params.frame);
-  
+      
       // image
       // this.setScale(3);
       this.setOrigin(0, 0);
@@ -12,9 +12,12 @@ export class Panel extends Phaser.GameObjects.Sprite {
     //   this.body.setVelocityX(-200);
     //   this.body.setSize(20, 20);
       this.setOrigin(0, 0);
-      (<Phaser.Physics.Arcade.Body>this.body).setBounce(1, 1);
-      (<Phaser.Physics.Arcade.Body>this.body).setCollideWorldBounds(true);
-      (<Phaser.Physics.Arcade.Body>this.body).setAllowGravity(false);
+
+      let abody = <Phaser.Physics.Arcade.Body>this.body;
+      abody.setBounce(0, 0);
+      abody.setCollideWorldBounds(true);
+      abody.setAllowGravity(false);
+      abody.setImmovable(true);
 
       params.scene.add.existing(this);
     }
