@@ -11,6 +11,8 @@ export class Santa extends Phaser.GameObjects.Sprite {
 
   private isJumping: boolean = false;
   private isPointerDown: boolean = false;
+
+  private velDefault = 500;
   private velDur = 200;
   private velMinLimit = 1000;
   private vec: Vector2Like = { x: 0, y: 100 };
@@ -138,7 +140,7 @@ export class Santa extends Phaser.GameObjects.Sprite {
   private jump(){
     if(!this.isJumping){
       this.isJumping = true;
-      this.aBody.setVelocityY(-this.velDur);
+      this.aBody.setVelocityY(-this.velDefault);
     }
   }
 
@@ -151,7 +153,7 @@ export class Santa extends Phaser.GameObjects.Sprite {
     }else{
       if(this.isJumping){
         if(this.aBody.velocity.y < 0){
-          this.aBody.setVelocityY(1);
+          this.aBody.setVelocityY(this.aBody.velocity.y + this.velDur);
         }
       }
 
