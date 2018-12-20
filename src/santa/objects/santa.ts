@@ -11,7 +11,9 @@ export class Santa extends Phaser.GameObjects.Sprite {
 
   private isJumping: boolean = false;
   private isPointerDown: boolean = false;
-  private vec: Vector2Like = { x: 0, y: 1000 };
+  private velDur = 200;
+  private velMinLimit = 1000;
+  private vec: Vector2Like = { x: 0, y: 100 };
   private g: number = 0;
 
   private aBody: Phaser.Physics.Arcade.Body = null;
@@ -135,14 +137,17 @@ export class Santa extends Phaser.GameObjects.Sprite {
 
   private jump(){
     if(!this.isJumping){
-      this.aBody.setVelocityY(-this.vec.y);
       this.isJumping = true;
+      this.aBody.setVelocityY(-this.velDur);
     }
   }
 
-  private land(jumpingInput: boolean){
+  private neutral(jumpingInput: boolean){
     if(jumpingInput){
-      // 
+      this.vec.y = this.vec.y + this.velDur;
+      if(this.vec.y <= this.velMinLimit){
+        this.aBody.setVelocityY(-this.vec.y);
+      }
     }else{
       if(this.isJumping){
         if(this.aBody.velocity.y < 0){
@@ -151,7 +156,8 @@ export class Santa extends Phaser.GameObjects.Sprite {
       }
 
       if(this.aBody.blocked.down || this.aBody.velocity.y == 0){
-        this.isJumping = false
+        this.isJumping = false;
+        this.vec.y = this.velDur;
       }
     }
   }
@@ -171,7 +177,7 @@ export class Santa extends Phaser.GameObjects.Sprite {
     if (fire_jump) { 
       this.jump();
     }
-    this.land(fire_jump);
+    this.neutral(fire_jump);
     
     if (this.inputRight()) {
       this.goRight();    
