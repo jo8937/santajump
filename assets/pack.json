@@ -14,7 +14,7 @@
         {
           "type": "spritesheet",
           "key": "icon",
-          "url": "assets/icon.png",
+          "url": "assets/icons.png",
           "frameConfig": {
             "frameWidth": 90,
             "frameHeight": 90
