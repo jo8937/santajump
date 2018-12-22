@@ -13,6 +13,24 @@
         },
         {
           "type": "spritesheet",
+          "key": "icon",
+          "url": "assets/icon.png",
+          "frameConfig": {
+            "frameWidth": 90,
+            "frameHeight": 90
+          }
+        },
+        {
+          "type": "spritesheet",
+          "key": "hat",
+          "url": "assets/hat.png",
+          "frameConfig": {
+            "frameWidth": 30,
+            "frameHeight": 30
+          }
+        },
+        {
+          "type": "spritesheet",
           "key": "santa",
           "url": "assets/santa-sd-720.png",
           "frameConfig": {

@@ -1,23 +1,27 @@
 import { Santa } from "../objects/santa";
 import { Panel } from "../objects/panel";
+import { Score } from "../component/score";
+import { Life } from "../component/life";
 
 export class MainScene extends Phaser.Scene {
   private phaserSprite: Phaser.GameObjects.Sprite;
 
-  // Chara
-  private santa: Santa;
-
-  // Phaser.Physics.Arcade.StaticGroup;
-  private panels: Phaser.GameObjects.Group;
-
-  // Back Ground
-  private bg: Phaser.GameObjects.TileSprite;
   public scrollBorderLineY : integer = 200;
   // variables
   private timer: Phaser.Time.TimerEvent;
-  private score: number;
-  private scoreText: Phaser.GameObjects.Text[];
+
+  // Chara
+  private santa: Santa;
+  // Phaser.Physics.Arcade.StaticGroup;
+  private panels: Phaser.GameObjects.Group;
+  // Back Ground
+  private bg: Phaser.GameObjects.TileSprite;
+
+  private life : Life;
+
+  private score: Score;
   
+
   constructor() {
     super({
       key: "MainScene"
@@ -32,23 +36,6 @@ export class MainScene extends Phaser.Scene {
 
     // variables
     this.timer = undefined;
-    this.score = -1;
-    this.scoreText = [];
-  }
-
-  createScore() : void{
-    this.scoreText.push(
-      this.add.text(this.sys.canvas.width / 2 - 14, 30, "0", {
-        fontSize: "40px",
-        fill: "#000"
-      })
-    );
-    this.scoreText.push(
-      this.add.text(this.sys.canvas.width / 2 - 16, 30, "0", {
-        fontSize: "40px",
-        fill: "#fff"
-      })
-    );
   }
 
   createSnow():void{
@@ -74,15 +61,20 @@ export class MainScene extends Phaser.Scene {
     //let chara = this.add.image(200,0,"scg",2);
     //let panels = this.physics.add.staticGroup();
     
+    this.score = new Score(this);
+    this.score.updateScore();
+
+    this.life = new Life(this);
+    this.life.createStatus();
+
     this.santa = new Santa({
       scene: this,
       x: 50,
       y: 100,
       key: 'santa'
     });
-    this.createScore();
+
     this.generatePanels();
-    this.setScore();
 
     this.sound.add('bgm');
     this.sound.play('bgm');
@@ -100,12 +92,6 @@ export class MainScene extends Phaser.Scene {
     this.bg.setTilePosition(this.bg.tilePositionX,  upY);
   }
 
-  setScore(): void{
-    // update the score
-    this.score += 1;
-    this.scoreText[0].setText("" + this.score);
-    this.scoreText[1].setText("" + this.score);
-  }
 
   generatePanels(): void{
     

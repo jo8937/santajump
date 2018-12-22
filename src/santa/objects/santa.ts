@@ -13,14 +13,77 @@ export class Santa extends Phaser.GameObjects.Sprite {
   private isJumping: boolean = false;
   private isPointerDown: boolean = false;
 
-  private velDefault = 200;
+  private velMove = 150;
+  private velDefault = 150;
   private velDur = 200;
   private velMinLimit = 1000;
   private vec: Vector2Like = { x: 0, y: 100 };
-  private g: number = 0;
+  private gyroX: number = 0;
 
   private aBody: Phaser.Physics.Arcade.Body = null;
   private aScene: MainScene = null;
+
+
+  constructor(params) {
+    super(params.scene, params.x, params.y, params.key, params.frame);
+    this.aScene = <MainScene> params.scene;
+
+    this.initAnimation()
+
+    // physics
+    params.scene.physics.world.enable(this);
+    this.aBody = <Phaser.Physics.Arcade.Body> this.body;
+    this.setOrigin(0, 0);
+    this.setScale(0.6);
+    this.aBody.setBounce(1, 0);
+    this.aBody.setCollideWorldBounds(true);
+    this.aBody.setAllowGravity(true);
+
+    // animations & tweens
+    this.anim = [];
+    //   this.anim.push(
+    //     params.scene.tweens.add({
+    //       targets: this,
+    //       duration: 100,
+    //       angle: 1
+    //     })
+    //   );
+    this.registInput(params.scene);
+    
+    params.scene.add.existing(this);
+    
+    this.goRight();
+    
+  }
+
+  private registInput(scene){
+
+    // input
+
+    this.jumpKey = scene.input.keyboard.addKey(
+      Phaser.Input.Keyboard.KeyCodes.SPACE
+    );
+    this.leftKey = scene.input.keyboard.addKey(
+      Phaser.Input.Keyboard.KeyCodes.LEFT
+    );
+    this.rightKey = scene.input.keyboard.addKey(
+      Phaser.Input.Keyboard.KeyCodes.RIGHT
+    );
+    this.jumpKey.duration = 10
+
+    //this.cursors = params.scene.input.keyboard.createCursorKeys();
+    this.pointers = scene.input.activePointer;
+    //params.scene.input.keyboard.addKeyCapture([ Phaser.Input.Keyboard. .LEFT, Phaser.Keyboard.RIGHT, Phaser.Keyboard.SPACEBAR ]);
+
+    this.addGyro();
+    scene.input.on("pointerdown", pointer => {
+      this.isPointerDown = true;
+    });
+    scene.input.on("pointerup", pointer => {
+      this.isPointerDown = false;
+    });
+  }
+
   public getDead(): boolean {
     return this.isDead;
   }
@@ -57,60 +120,6 @@ export class Santa extends Phaser.GameObjects.Sprite {
       });
   }
 
-  constructor(params) {
-    super(params.scene, params.x, params.y, params.key, params.frame);
-    this.aScene = <MainScene> params.scene;
-
-    this.initAnimation()
-
-    // physics
-    params.scene.physics.world.enable(this);
-    this.aBody = <Phaser.Physics.Arcade.Body> this.body;
-    this.setOrigin(0, 0);
-    this.setScale(0.5);
-    this.aBody.setBounce(1, 0);
-    this.aBody.setCollideWorldBounds(true);
-    this.aBody.setAllowGravity(true);
-
-    // animations & tweens
-    this.anim = [];
-    //   this.anim.push(
-    //     params.scene.tweens.add({
-    //       targets: this,
-    //       duration: 100,
-    //       angle: 1
-    //     })
-    //   );
-
-    // input
-
-    this.jumpKey = params.scene.input.keyboard.addKey(
-      Phaser.Input.Keyboard.KeyCodes.SPACE
-    );
-    this.leftKey = params.scene.input.keyboard.addKey(
-      Phaser.Input.Keyboard.KeyCodes.LEFT
-    );
-    this.rightKey = params.scene.input.keyboard.addKey(
-      Phaser.Input.Keyboard.KeyCodes.RIGHT
-    );
-    this.jumpKey.duration = 10
-
-    //this.cursors = params.scene.input.keyboard.createCursorKeys();
-    this.pointers = params.scene.input.activePointer;
-    //params.scene.input.keyboard.addKeyCapture([ Phaser.Input.Keyboard. .LEFT, Phaser.Keyboard.RIGHT, Phaser.Keyboard.SPACEBAR ]);
-
-    this.addGyro();
-    params.scene.input.on("pointerdown", pointer => {
-      this.isPointerDown = true;
-    });
-    params.scene.input.on("pointerup", pointer => {
-      this.isPointerDown = false;
-    });
-    params.scene.add.existing(this);
-
-    this.goRight();
-    
-  }
 
   public addGyro(): void {
     if (gyro) {
@@ -121,7 +130,7 @@ export class Santa extends Phaser.GameObjects.Sprite {
           // updating player velocity
           return function(o) {
             if (o && o.gamma) {
-              parent.g = o.gamma;
+              parent.gyroX = o.gamma;
             }
           };
           //player.body.velocity.y += o.beta/20;
@@ -131,11 +140,11 @@ export class Santa extends Phaser.GameObjects.Sprite {
   }
 
   private inputLeft(){
-    return this.leftKey.isDown || this.g < 0;
+    return this.leftKey.isDown || this.gyroX < 0;
   }
   
   private inputRight(){
-    return this.rightKey.isDown || this.g > 0;
+    return this.rightKey.isDown || this.gyroX > 0;
     
   }
 
@@ -171,12 +180,12 @@ export class Santa extends Phaser.GameObjects.Sprite {
   }
 
   private goLeft(){
-    this.aBody.setVelocityX(-this.velDefault);
+    this.aBody.setVelocityX(-this.velMove);
     this.setLeft();
   }
 
   private goRight(){
-    this.aBody.setVelocityX(this.velDefault);
+    this.aBody.setVelocityX(this.velMove);
     this.setRight();
   }
 
@@ -213,10 +222,10 @@ export class Santa extends Phaser.GameObjects.Sprite {
       }
     }
 
-    if(this.aBody.y < this.aScene.scrollBorderLineY){
-      //this.aScene.
-      this.aScene.scrollBackground(this.aBody.y);
-    }
+    // if(this.aBody.y < this.aScene.scrollBorderLineY){
+    //   //this.aScene.
+    //   this.aScene.scrollBackground(this.aBody.y);
+    // }
 
   }
 
