@@ -62,10 +62,16 @@ export class Life {
         }
       }
       this.lifeChanged = false;
+      let idx = this.maxLife - this.life;
+      if(idx < 0){
+        idx = 0;
+      }
+      this.icon.setFrame(idx);
     }
   }
 
   public reduceLife(){
+    this.icon.setFrame(4);
     this.life--;
     this.lifeChanged = true;
     if(this.life < 0){

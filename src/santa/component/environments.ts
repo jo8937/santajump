@@ -26,7 +26,6 @@ export class Environments {
   public createBgm(){
     this.bgm = this.scene.sound.add('bgm');
     
-    this.playBgm();
 
     this.soundToggleKey = this.scene.input.keyboard.addKey(
       Phaser.Input.Keyboard.KeyCodes.ESC
@@ -39,11 +38,13 @@ export class Environments {
       }
     })(this));
     
+    this.playBgm();
   }
 
   public playBgm(){
     //this.scene.sound.play('bgm',  { loop : true } );
     this.bgm.play("",  { loop: true });
+    this.bgmbtn.setFrame(0);
   }
 
   public createBackground(){

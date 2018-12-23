@@ -30,7 +30,10 @@ export class DeadScene extends Phaser.Scene {
       );
 
     this.input.once('pointerdown', function (deads) {
-        return () =>{ deads.scene.remove('DeadScene') };
+        return () =>{ 
+          deads.scene.stop('DeadScene');
+          deads.scene.start("MainScene");
+        };
     }(this));
   }
 

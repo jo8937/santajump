@@ -93,13 +93,22 @@ export class MainScene extends Phaser.Scene {
     if(this.santa.getDead()){
       // timer popup
       this.life.reduceLife();
+      this.game.sound.stopAll();
       this.scene.pause('MainScene');
 
       if(this.life.noLife()){
-        this.scene.start("DeadScene");
+        setTimeout(() => {
+          this.scene.start("DeadScene");
+          this.scene.remove("MainScene");
+        },1000);
       }else{
-        this.resetSanta();
-        this.scene.resume('MainScene');
+        this.santa.setDead(false);
+        setTimeout(() => {
+          this.resetSanta();
+          this.game.sound.resumeAll();
+          this.envs.playBgm();
+          this.scene.resume('MainScene');
+        },1000);
       }
     }
   }
