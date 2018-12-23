@@ -23,6 +23,7 @@ export class Santa extends Phaser.GameObjects.Sprite {
   private aBody: Phaser.Physics.Arcade.Body = null;
   private aScene: MainScene = null;
 
+  private jumpSound : Phaser.Sound.BaseSound;
 
   constructor(params) {
     super(params.scene, params.x, params.y, params.key, params.frame);
@@ -50,8 +51,12 @@ export class Santa extends Phaser.GameObjects.Sprite {
     //   );
     this.registInput(params.scene);
     
+    //params.scene.aud
+
     params.scene.add.existing(this);
     
+    this.jumpSound = this.scene.sound.add('jump');
+
     this.goRight();
     
   }
@@ -156,6 +161,7 @@ export class Santa extends Phaser.GameObjects.Sprite {
     if(!this.isJumping){
       this.isJumping = true;
       this.aBody.setVelocityY(-this.velDefault);
+      this.jumpSound.play();
     }
   }
 
