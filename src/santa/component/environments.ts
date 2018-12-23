@@ -7,6 +7,7 @@ export class Environments {
   private bg: Phaser.GameObjects.TileSprite;
 
   private bgm : Phaser.Sound.BaseSound;
+  private bgmbtn : Phaser.GameObjects.Sprite;
 
   private soundToggleKey: Phaser.Input.Keyboard.Key;
 
@@ -23,14 +24,21 @@ export class Environments {
   }
 
   public createBgm(){
-
     this.bgm = this.scene.sound.add('bgm');
+    
     this.playBgm();
 
     this.soundToggleKey = this.scene.input.keyboard.addKey(
       Phaser.Input.Keyboard.KeyCodes.ESC
     );
 
+    this.bgmbtn = this.scene.add.sprite(30,30,'bgmbtn');
+    this.bgmbtn.setInteractive().on("pointerdown",((envs) => {
+      return (pointer, localX, localY, event) => {
+        envs.toggleBgm();
+      }
+    })(this));
+    
   }
 
   public playBgm(){
@@ -68,15 +76,25 @@ export class Environments {
 
 
   public update(){
-    
+    this.lietenSettingKey();
+  }
+
+  public lietenSettingKey(){
+    //console.log(this.soundToggleKey.isDown);
     if(Phaser.Input.Keyboard.JustDown(this.soundToggleKey)){
-      if ( this.bgm.isPlaying ) {
-        this.bgm.stop();
-        //this.scene.sound.stopAll();
-      }else{
-        this.bgm.play();
-      }
+      this.toggleBgm();
+    }
+  }
+
+
+  public toggleBgm(){
+    if ( this.bgm.isPlaying ) {
+      this.bgm.stop();
+      this.bgmbtn.setFrame(1);
+      //this.scene.sound.stopAll();
+    }else{
+      this.bgm.play();
+      this.bgmbtn.setFrame(0);
     }
   }
 }
-  

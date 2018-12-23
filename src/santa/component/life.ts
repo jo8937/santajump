@@ -8,6 +8,8 @@ export class Life {
 
   private lifeImage : Phaser.GameObjects.Sprite[];
 
+  private icon : Phaser.GameObjects.Sprite;
+
   constructor(scene) {
     this.scene = scene;
   }
@@ -18,7 +20,7 @@ export class Life {
     let iconWidth = iconSrc.height;
     let iconX  = this.scene.sys.canvas.width - iconWidth / 2;
     let iconY = iconSrc.height / 2;
-    this.scene.add.sprite(iconX, iconY, "icon",1);
+    this.icon = this.scene.add.sprite(iconX, iconY, "icon",0);
 
     this.lifeImage = [];
     let lifeX = this.scene.sys.canvas.width - iconWidth + hatSrc.width / 2;
@@ -28,9 +30,21 @@ export class Life {
           this.scene.add.sprite(lifeX + hatSrc.width * i, lifeY, "hat",0)
         );
     }
-        
+    this.registIconAction();
   }
 
+  private registIconAction(){
+    this.icon.setInteractive().on("pointerdown",((parents) => {
+      return (pointer, localX, localY, event) => {
+        let frameIndex = (parseInt(parents.icon.frame.name)) + 1;
+        if ( frameIndex >= parents.icon.frame.texture.frameTotal - 1){
+          frameIndex = 0;
+        }
+        parents.icon.setFrame(frameIndex);
+        //parents.icon.anims.currentFrame.index
+      }
+    })(this));
+  }
   public isDead() : boolean{
     return this.life <= 0;
   }

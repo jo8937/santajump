@@ -19,7 +19,7 @@ export class Score {
 
     createScore() : void{
       const top : number = 20;
-      this.heightText = this.scene.add.text(10, top, "x", {
+      this.heightText = this.scene.add.text(10, 60, "test version", {
           fontSize: "12px",
           fill: "#efefef"
         }

@@ -22,6 +22,15 @@
         },
         {
           "type": "spritesheet",
+          "key": "bgmbtn",
+          "url": "assets/bgm-btn.png",
+          "frameConfig": {
+            "frameWidth": 50,
+            "frameHeight": 50
+          }
+        },
+        {
+          "type": "spritesheet",
           "key": "hat",
           "url": "assets/hat.png",
           "frameConfig": {
