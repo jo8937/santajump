@@ -83,8 +83,32 @@ export class MainScene extends Phaser.Scene {
   update(): void{
     this.santa.update();
     this.envs.update();
+    this.life.update();
+    this.score.update();
+    this.checkGameState();
   }
 
+
+  public checkGameState(){
+    if(this.santa.getDead()){
+      // timer popup
+      this.life.reduceLife();
+      this.scene.pause('MainScene');
+
+      if(this.life.noLife()){
+        this.scene.start("DeadScene");
+      }else{
+        this.resetSanta();
+        this.scene.resume('MainScene');
+      }
+    }
+  }
+
+  public resetSanta(){
+    this.santa.setDead(false);
+    this.santa.x = 100; 
+    this.santa.y = 100;
+  }
 
 
 

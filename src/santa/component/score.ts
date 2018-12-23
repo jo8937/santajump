@@ -38,11 +38,13 @@ export class Score {
         }
       );
     }
-
     updateScore(){
-        this.score += 1;
-        this.scoreText.setText("" + this.score);
-        this.scoreMaxText.setText("/" + this.scoreMax);
+      this.score += 1;
+      this.scoreText.setText("" + this.score);
+      this.scoreMaxText.setText("/" + this.scoreMax);
+    }
+    update(){
+        
     }
 }
   

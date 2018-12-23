@@ -5,7 +5,7 @@ export class Life {
   private scene: MainScene;
   private life : number = 3;
   private maxLife : number = 3;
-
+  private lifeChanged : boolean = false;
   private lifeImage : Phaser.GameObjects.Sprite[];
 
   private icon : Phaser.GameObjects.Sprite;
@@ -33,6 +33,11 @@ export class Life {
     this.registIconAction();
   }
 
+
+  public update(){
+    this.checkAndDrawLife();
+  }
+  
   private registIconAction(){
     this.icon.setInteractive().on("pointerdown",((parents) => {
       return (pointer, localX, localY, event) => {
@@ -45,12 +50,27 @@ export class Life {
       }
     })(this));
   }
-  public isDead() : boolean{
+  public noLife() : boolean{
     return this.life <= 0;
   }
 
-  public checkLife(){
+  public checkAndDrawLife(){
+    if(this.lifeChanged){
+      for(let i=0; i < this.maxLife; i++){
+        if(this.life < i+1){
+          this.lifeImage[i].setAlpha(0);
+        }
+      }
+      this.lifeChanged = false;
+    }
+  }
 
+  public reduceLife(){
+    this.life--;
+    this.lifeChanged = true;
+    if(this.life < 0){
+      this.life = 0;
+    }
   }
 
 }

@@ -25,6 +25,7 @@ export class Santa extends Phaser.GameObjects.Sprite {
 
   private jumpSound : Phaser.Sound.BaseSound;
 
+  private movable : boolean = true;
   constructor(params) {
     super(params.scene, params.x, params.y, params.key, params.frame);
     this.aScene = <MainScene> params.scene;
@@ -38,6 +39,8 @@ export class Santa extends Phaser.GameObjects.Sprite {
     this.setScale(0.6);
     this.aBody.setBounce(1, 0);
     this.aBody.setCollideWorldBounds(true);
+    this.aBody.world.checkCollision.up = false;
+    this.aBody.world.checkCollision.down = false;
     this.aBody.setAllowGravity(true);
 
     // animations & tweens
@@ -235,16 +238,20 @@ export class Santa extends Phaser.GameObjects.Sprite {
 
   }
 
+  public checkDead(){
+    if(this.isOffTheScreen()){
+      this.isDead = true;
+    }
+
+  }
+
   update(): void {
     this.checkInput();
     this.checkState();
+    this.checkDead();
   }
 
-
-
-  private isOffTheScreen(): void {
-    if (this.y + this.height > this.scene.sys.canvas.height) {
-      this.isDead = true;
-    }
+  private isOffTheScreen(): boolean {
+    return (this.y > this.scene.sys.canvas.height + this.height);
   }
 }

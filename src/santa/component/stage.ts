@@ -29,11 +29,12 @@ export class Stage {
   }
 
 
+
   generatePanels(): void{
     
     let mintop = this.scene.sys.canvas.height / 4;
     // randomly pick a number between 1 and 5
-    for(let i=0; i < 10; i++){
+    for(let i=0; i < 3; i++){
       let x = Math.floor(Math.random() * this.scene.sys.canvas.width);
       let y = mintop + Math.floor(Math.random() * (3 * this.scene.sys.canvas.height / 4));
   
