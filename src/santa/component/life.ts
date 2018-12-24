@@ -9,7 +9,7 @@ export class Life {
   private lifeImage : Phaser.GameObjects.Sprite[];
 
   private icon : Phaser.GameObjects.Sprite;
-
+  
   constructor(scene) {
     this.scene = scene;
   }
@@ -26,9 +26,12 @@ export class Life {
     let lifeX = this.scene.sys.canvas.width - iconWidth + hatSrc.width / 2;
     let lifeY = iconSrc.height + hatSrc.height / 2;
     for(let i=0; i < this.maxLife; i++){
-        this.lifeImage.push(
-          this.scene.add.sprite(lifeX + hatSrc.width * i, lifeY, "hat",0)
-        );
+        let hat = this.scene.add.sprite(lifeX + hatSrc.width * i, lifeY, "hat",0)
+        if(this.life <= i){
+          hat.setAlpha(0);
+        }
+
+        this.lifeImage.push(hat );
     }
     this.registIconAction();
   }
@@ -46,10 +49,12 @@ export class Life {
           frameIndex = 0;
         }
         parents.icon.setFrame(frameIndex);
+        parents.scene.togglePause();
         //parents.icon.anims.currentFrame.index
       }
     })(this));
   }
+
   public noLife() : boolean{
     return this.life <= 0;
   }

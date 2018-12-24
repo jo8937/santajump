@@ -88,24 +88,36 @@ export class MainScene extends Phaser.Scene {
     this.checkGameState();
   }
 
+  private timeoutFlag : number;
 
   public checkGameState(){
     if(this.santa.getDead()){
       // timer popup
       this.life.reduceLife();
-      this.game.sound.stopAll();
-      this.scene.pause('MainScene');
-
+      
       if(this.life.noLife()){
-        setTimeout(() => {
-          this.scene.start("DeadScene");
-          this.scene.remove("MainScene");
-        },1000);
+        this.game.sound.stopAll();
+
+        this.time.addEvent({
+          delay:1000,
+          callback: ()=>{
+            this.scene.stop("MainScene");
+            this.scene.start("DeadScene");  
+          }
+        })
+        // setTimeout(() => {
+        //   this.scene.stop("MainScene");
+        //   this.scene.start("DeadScene");
+        // },1000);
       }else{
+        this.scene.pause('MainScene');
         this.santa.setDead(false);
-        setTimeout(() => {
+        if(!this.timeoutFlag){
+          clearTimeout(this.timeoutFlag);
+        }
+        this.timeoutFlag = setTimeout(() => {
           this.resetSanta();
-          this.game.sound.resumeAll();
+          //this.game.sound.resumeAll();
           this.envs.playBgm();
           this.scene.resume('MainScene');
         },1000);
@@ -117,6 +129,20 @@ export class MainScene extends Phaser.Scene {
     this.santa.setDead(false);
     this.santa.x = 100; 
     this.santa.y = 100;
+  }
+
+  private paused : boolean = false;
+
+  public togglePause(){
+    if(this.paused){
+      this.scene.sleep("PauseScene");
+      this.scene.moveDown("PauseScene");
+      this.scene.resume();
+    }else{
+      this.scene.launch("PauseScene");
+      this.scene.bringToTop("PauseScene");
+      this.scene.pause();
+    }
   }
 
 
