@@ -1,27 +1,27 @@
 import { Santa } from "../objects/santa";
 import { Panel } from "../objects/panel";
-import { Score } from "../component/score";
+import { Status } from "../component/status";
 import { Life } from "../component/life";
 import { Stage } from "../component/stage";
-import { Environments } from "../component/environments";
+import { BackGroundScene } from "./backGroundScene";
+import { UIScene } from "./uiScene";
 
 export class MainScene extends Phaser.Scene {
   private phaserSprite: Phaser.GameObjects.Sprite;
 
-  public scrollBorderLineY : integer = 200;
+  public mapHeight : integer = 2000;
   // variables
   private timer: Phaser.Time.TimerEvent;
 
   // Chara
   private santa: Santa;
 
-  private life : Life;
-
-  private score: Score;
+  public life : Life;
 
   private stage: Stage;
  
-  private envs : Environments;
+  private bg : BackGroundScene;
+  private ui : UIScene;
 
   constructor() {
     super({
@@ -37,37 +37,45 @@ export class MainScene extends Phaser.Scene {
 
     this.life = null;
 
-    this.score = null;
-
-    this.envs = null;
-
+    this.bg = null;
+    
 
   }
 
+  createBackground(){
+    this.scene.launch("BackGroundScene");
+    this.scene.sendToBack("BackGroundScene"); 
+    this.bg = <BackGroundScene> this.scene.get("BackGroundScene");
+  }
+
+  createUI(){
+    this.scene.launch("UIScene");
+    this.scene.bringToTop("UIScene"); 
+    this.ui = <UIScene> this.scene.get("UIScene");
+  }
+
   create(): void {
-    //let data = this.cache.json.get('preload');
-
-
-    this.envs = new Environments(this);
-    this.score = new Score(this);
-    this.life = new Life(this);
-    this.stage = new Stage(this);
+    this.createBackground();
     
-    this.envs.createBackground();
-    this.envs.createSettings();
-    this.envs.createSnows();
-    this.envs.createBgm();
-
-    this.score.createScore();
-    this.score.updateScore();
-
-    this.life.createStatus();
+    //let data = this.cache.json.get('preload');
+    this.life = new Life(this.game.registry);
+    this.stage = new Stage(this);
+        
     
     this.stage.createStage();
     this.stage.generatePanels();
     this.createSanta();
 
     this.physics.add.collider(this.santa, this.stage.panels);
+    this. setCamera();
+
+    this.createUI();
+  }
+
+  private setCamera(){
+    this.cameras.main.setSize(this.sys.canvas.width,this.sys.canvas.height);
+    this.cameras.main.startFollow(this.santa);
+    this.cameras.main.setBounds(0, -this.mapHeight, this.sys.canvas.width,this.sys.canvas.height+this.mapHeight);
   }
 
   createSanta(){
@@ -82,9 +90,6 @@ export class MainScene extends Phaser.Scene {
 
   update(): void{
     this.santa.update();
-    this.envs.update();
-    this.life.update();
-    this.score.update();
     this.checkGameState();
   }
 
@@ -101,7 +106,8 @@ export class MainScene extends Phaser.Scene {
         this.time.addEvent({
           delay:1000,
           callback: ()=>{
-            this.scene.stop("MainScene");
+            this.scene.stop("UIScene");  
+            this.scene.stop("BackGroundScene");  
             this.scene.start("DeadScene");  
           }
         })
@@ -118,7 +124,9 @@ export class MainScene extends Phaser.Scene {
         this.timeoutFlag = setTimeout(() => {
           this.resetSanta();
           //this.game.sound.resumeAll();
-          this.envs.playBgm();
+          if(this.ui != null){
+            this.ui.rewindBgm();
+          }
           this.scene.resume('MainScene');
         },1000);
       }
@@ -127,8 +135,7 @@ export class MainScene extends Phaser.Scene {
 
   public resetSanta(){
     this.santa.setDead(false);
-    this.santa.x = 100; 
-    this.santa.y = 100;
+    this.santa.placeStartLine();
   }
 
   private paused : boolean = false;

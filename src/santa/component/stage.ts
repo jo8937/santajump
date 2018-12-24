@@ -2,6 +2,8 @@ import { MainScene } from "../scenes/mainScene";
 
 import { Panel } from "../objects/panel";
 
+import { Keys } from "./keys";
+
 export class Stage {
   
   private scene: MainScene;
@@ -32,6 +34,13 @@ export class Stage {
 
   generatePanels(): void{
     
+    // start point
+    
+    let firstPanel = this.generateOnePanel(0,this.scene.sys.canvas.height, 0);
+    firstPanel.setPosition(0, firstPanel.y - firstPanel.height)
+
+    this.scene.game.registry.set(Keys.PANEL_HEIGHT.toString(),firstPanel.height);
+
     let mintop = this.scene.sys.canvas.height / 4;
     // randomly pick a number between 1 and 5
     for(let i=0; i < 3; i++){
@@ -42,7 +51,7 @@ export class Stage {
     }
   }
 
-  private generateOnePanel(x, y, frame): void {
+  private generateOnePanel(x, y, frame): Panel {
     // create a pipe at the position x and y
     let panel = new Panel({
       scene: this.scene,
@@ -54,6 +63,7 @@ export class Stage {
 
     // add pipe to group
     this.panels.add(panel);
+    return panel;
   }
   
 }

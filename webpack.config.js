@@ -20,7 +20,8 @@ config = {
     publicPath: '/build/',
     host: '0.0.0.0',
     port: 3002,
-    open: true
+    open: true,
+    public: "localhost:3002"
   },  
   resolve: {
     extensions: ['.ts', '.js'],

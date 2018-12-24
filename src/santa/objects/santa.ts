@@ -1,5 +1,6 @@
 declare var gyro: any;
 import { MainScene } from "../scenes/mainScene";
+import { Keys } from "../component/keys";
 
 export class Santa extends Phaser.GameObjects.Sprite {
   private anim: Phaser.Tweens.Tween[];
@@ -43,6 +44,7 @@ export class Santa extends Phaser.GameObjects.Sprite {
     this.aBody.world.checkCollision.down = false;
     this.aBody.setAllowGravity(true);
 
+    this.scene.game.registry.set(Keys.SANTA_HEIGHT.toString(),this.height);
     // animations & tweens
     this.anim = [];
     //   this.anim.push(
@@ -60,8 +62,14 @@ export class Santa extends Phaser.GameObjects.Sprite {
     
     this.jumpSound = this.scene.sound.add('jump');
 
-    this.goRight();
+    this.placeStartLine();
+    this.goLeft();
     
+  }
+
+  public placeStartLine(){
+    let panelHeight = <number> this.scene.game.registry.get(Keys.PANEL_HEIGHT.toString());
+    this.setPosition(this.width, this.scene.sys.canvas.height - this.height - (panelHeight * 2));
   }
 
   private registInput(scene){

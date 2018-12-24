@@ -6,6 +6,8 @@ import { BootScene } from "./scenes/bootScene";
 import { TitleScene } from "./scenes/titleScene";
 import { DeadScene } from "./scenes/deadScene";
 import { PauseScene } from "./scenes/pauseScene";
+import { BackGroundScene } from "./scenes/backGroundScene";
+import { UIScene } from "./scenes/uiScene";
 
 // main game configuration
 const config: GameConfig = {
@@ -14,7 +16,7 @@ const config: GameConfig = {
   backgroundColor: "#FFFFFF",
   type: Phaser.AUTO,
   parent: "game",
-  scene: [BootScene, TitleScene, DeadScene, PauseScene, MainScene],
+  scene: [BootScene, TitleScene, DeadScene, PauseScene, MainScene, BackGroundScene, UIScene],
   physics: {
     default: "arcade",
     arcade: {
