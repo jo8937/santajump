@@ -14,7 +14,7 @@ export class UIScene extends Phaser.Scene {
   private icon: Phaser.GameObjects.Sprite;
   private main: MainScene;
 
-  private score: number = -1;
+  public score: number = -1;
   private scoreMax: number = 11;
 
   private scoreText: Phaser.GameObjects.Text;
@@ -72,7 +72,7 @@ export class UIScene extends Phaser.Scene {
 
     this.createBgm();
     this.createScore();
-    this.updateScore();
+    this.initScore();
   }
 
   public initIcon(): Vector2Like {
@@ -178,7 +178,7 @@ export class UIScene extends Phaser.Scene {
     });
 
     this.scoreText = this.add.text(
-      this.sys.canvas.width / 2 - 40,
+      this.sys.canvas.width / 2 - 55,
       top,
       "x",
       {
@@ -198,10 +198,16 @@ export class UIScene extends Phaser.Scene {
     );
   }
 
-  updateScore() {
+  updateScore(score : number) {
+    this.score = score;
+    this.scoreText.setText("" + this.score);
+  }
+
+  
+  initScore() {
     this.score += 1;
     this.scoreText.setText("" + this.score);
-    this.scoreMaxText.setText("/" + this.scoreMax);
+    this.scoreMaxText.setText("/" + this.main.stage.getTotalFloor());
   }
 
   public lietenSettingKey() {

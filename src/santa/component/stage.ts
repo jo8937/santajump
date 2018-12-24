@@ -31,34 +31,52 @@ export class Stage {
 
   private soundToggleKey: Phaser.Input.Keyboard.Key;
 
-  private floorHeight : number = 200;
-  private floorWidth : number = 400;
+  // private floorHeight : number = 200;
+  // private floorWidth : number = 400;
   private floorTileWidth : number = 25;
   private floorTileHeight : number = 50;
+
+  public getFloorHeight(){
+    return this.floorTileHeight;
+  }
+
+  public getFloorTotalHeight(){
+    return this.floorTileHeight * this.stage.length;
+  }
 
   private stage : StageObject[][] = [
         [0,0,0,0,  9,0,0,0,  0,0,0,0, 0,0,0,0],
         [0,0,0,0,  0,0,0,0,  0,0,0,0, 0,0,0,0],
         [0,0,0,0,  1,0,0,0,  0,0,0,0, 0,0,0,0],
+
         [0,0,0,0,  0,0,0,0,  0,0,0,0, 0,0,0,0],
         [0,0,0,0,  0,0,0,0,  0,0,0,0, 0,0,0,0],
+        
         [0,0,0,0,  0,0,0,0,  0,0,0,0, 0,0,0,0],
         [0,0,0,0,  0,0,0,0,  0,0,0,0, 0,0,0,0],
+
         [0,0,0,0,  0,0,0,0,  0,0,1,0, 0,0,0,0],
         [0,0,0,0,  0,0,0,0,  0,0,0,0, 0,0,0,0],
+
         [0,0,0,0,  0,1,0,0,  0,0,0,0, 0,0,0,0],
         [0,0,0,0,  0,0,0,0,  0,0,0,0, 0,0,0,0],
+
         [3,0,0,0,  0,0,0,0,  0,0,0,0, 0,0,0,0],
         [0,0,0,0,  0,0,0,0,  0,0,0,0, 0,0,0,0],
+
         [1,0,0,0,  0,0,0,0,  0,0,0,0, 0,0,0,0],
         [0,0,0,0,  0,0,0,0,  0,0,0,0, 0,0,0,0],
+
         [0,0,0,0,  0,0,0,0,  0,0,0,0, 0,0,0,0],
+        [0,0,0,0,  0,0,0,0,  0,0,0,0, 0,0,0,0],
+
         [0,0,0,0,  0,3,0,0,  0,0,0,0, 0,0,0,0],
-        [0,0,0,0,  0,0,0,0,  0,0,0,0, 0,0,0,0],
         [0,0,0,0,  1,0,0,0,  0,0,0,0, 0,0,1,0],
+
         [0,0,0,0,  0,0,0,0,  0,0,0,0, 0,0,0,0],
-        [0,2,0,0,  0,0,0,0,  0,0,0,0, 0,0,0,0],
-        [0,0,0,0,  0,0,0,0,  1,0,0,0, 0,0,0,0],
+        [0,2,0,0,  0,0,0,0,  0,0,1,0, 0,0,0,0],
+
+        [0,0,0,0,  0,0,0,0,  0,0,0,0, 0,0,0,0],
         [1,0,0,0,  1,0,0,0,  0,0,0,0, 0,0,0,0],
   ];
 
@@ -67,6 +85,10 @@ export class Stage {
     this.santa = null;
   }
  
+  public getTotalFloor(){
+    return this.stage.length;
+  }
+
   public createStage(){
     this.enermies = this.scene.add.group({ classType: Enermy });
     this.objects = this.scene.add.group({ classType: Phaser.GameObjects.Sprite });
@@ -135,6 +157,8 @@ export class Stage {
     this.panels.add(panel);
     return panel;
   }
+
+
   
 }
   

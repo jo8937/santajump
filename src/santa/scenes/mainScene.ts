@@ -15,7 +15,7 @@ export class MainScene extends Phaser.Scene {
 
   public life : Life;
 
-  private stage: Stage;
+  public stage: Stage;
  
   private bg : BackGroundScene;
   private ui : UIScene;
@@ -194,10 +194,22 @@ export class MainScene extends Phaser.Scene {
   }
 
   initEventListener(){
-    //var eventEmitter = this.events;
-    //eventEmitter.on('jump', this.checkOutOfBound, this);
+    var eventEmitter = this.events;
+    eventEmitter.on('jump', this.checkFloor, this);
   }
   
+  checkFloor ()
+  {
+    this.ui.updateScore(
+      Math.floor(
+      (
+        (this.stage.getFloorTotalHeight() - this.stage.santa.y / this.stage.getFloorHeight()))
+      /
+      this.stage.getTotalFloor()
+      )
+      );
+  }
+
   checkOutOfBound ()
   {
     console.log(this.stage.santa.y); 
