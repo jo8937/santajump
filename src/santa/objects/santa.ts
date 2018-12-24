@@ -27,14 +27,20 @@ export class Santa extends Phaser.GameObjects.Sprite {
   private jumpSound : Phaser.Sound.BaseSound;
 
   private movable : boolean = true;
-  constructor(params) {
-    super(params.scene, params.x, params.y, params.key, params.frame);
-    this.aScene = <MainScene> params.scene;
+  constructor(
+    scene: Phaser.Scene,
+    x: number,
+    y: number,
+    texture: string,
+    frame?: string | integer
+  ) {
+    super(scene, x, y, texture, frame);
+    this.aScene = <MainScene> scene;
 
     this.initAnimation()
 
     // physics
-    params.scene.physics.world.enable(this);
+    scene.physics.world.enable(this);
     this.aBody = <Phaser.Physics.Arcade.Body> this.body;
     this.setOrigin(0, 0);
     this.setScale(0.6);
@@ -54,22 +60,15 @@ export class Santa extends Phaser.GameObjects.Sprite {
     //       angle: 1
     //     })
     //   );
-    this.registInput(params.scene);
+    this.registInput(scene);
     
     //params.scene.aud
 
-    params.scene.add.existing(this);
+    scene.add.existing(this);
     
     this.jumpSound = this.scene.sound.add('jump');
 
-    this.placeStartLine();
-    this.goLeft();
     
-  }
-
-  public placeStartLine(){
-    let panelHeight = <number> this.scene.game.registry.get(Keys.PANEL_HEIGHT.toString());
-    this.setPosition(this.width, this.scene.sys.canvas.height - this.height - (panelHeight * 2));
   }
 
   private registInput(scene){
@@ -108,6 +107,15 @@ export class Santa extends Phaser.GameObjects.Sprite {
     this.isDead = dead;
   }
 
+  public showDead(){
+    this.setTint(0xFF0000);
+    this.anims.play("turn");
+  }
+  public showRebirth(){
+    this.setLeft();
+    this.setTint(0xFFFFFF);
+  }
+
   initAnimation() : void {
     this.anims.animationManager.create({
         key: "left",
@@ -122,7 +130,7 @@ export class Santa extends Phaser.GameObjects.Sprite {
       this.anims.animationManager.create({
         key: "turn",
         frames: [{ key: "santa", frame: 4 }],
-        frameRate: 20
+        frameRate: 10
       });
   
       this.anims.animationManager.create({
@@ -229,6 +237,7 @@ export class Santa extends Phaser.GameObjects.Sprite {
   }
 
   public checkState(){
+    if(this.anims.getCurrentKey() != "turn")
     {
       if(this.aBody.velocity.x > 0){
         this.setRight();
@@ -248,7 +257,8 @@ export class Santa extends Phaser.GameObjects.Sprite {
 
   public checkDead(){
     if(this.isOffTheScreen()){
-      this.isDead = true;
+      //this.isDead = true;
+      this.setDead(true);
     }
 
   }

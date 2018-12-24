@@ -7,5 +7,8 @@ export class Snowpanel extends Phaser.GameObjects.Sprite {
       super(params.scene, params.x, params.y, params.key, params.frame);
     }
 
+    update(): void {
+      // check out of
+    }
 
   }

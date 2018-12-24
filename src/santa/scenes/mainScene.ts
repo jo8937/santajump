@@ -4,6 +4,7 @@ import { Life } from "../component/life";
 import { Stage } from "../component/stage";
 import { BackGroundScene } from "./backGroundScene";
 import { UIScene } from "./uiScene";
+import { Hukuro } from "../objects/hukuro";
 
 export class MainScene extends Phaser.Scene {
   private phaserSprite: Phaser.GameObjects.Sprite;
@@ -12,8 +13,6 @@ export class MainScene extends Phaser.Scene {
   // variables
   private timer: Phaser.Time.TimerEvent;
 
-  // Chara
-  private santa: Santa;
 
   public life : Life;
 
@@ -30,7 +29,7 @@ export class MainScene extends Phaser.Scene {
 
   init(): void {
     // objects
-    this.santa = null;
+    
     // variables
     this.timer = undefined;
 
@@ -62,10 +61,14 @@ export class MainScene extends Phaser.Scene {
         
     
     this.stage.createStage();
-    this.stage.generatePanels();
-    this.createSanta();
+    //  this.stage.generatePanels();
 
-    this.physics.add.collider(this.santa, this.stage.panels);
+    this.physics.add.collider(this.stage.santa, this.stage.panels);
+    this.physics.add.collider(this.stage.santa, this.stage.objects);
+    this.physics.add.collider(this.stage.objects, this.stage.panels);
+    this.physics.add.collider(this.stage.enermies, this.stage.panels);
+    this.physics.add.overlap(this.stage.santa, this.stage.enermies, this.hitEnermy, null, this);
+
     this. setCamera();
 
     this.createUI();
@@ -73,32 +76,25 @@ export class MainScene extends Phaser.Scene {
 
   private setCamera(){
     this.cameras.main.setSize(this.sys.canvas.width,this.sys.canvas.height);
-    this.cameras.main.startFollow(this.santa);
+    this.cameras.main.startFollow(this.stage.santa);
     this.cameras.main.setBounds(0, -this.mapHeight, this.sys.canvas.width,this.sys.canvas.height+this.mapHeight);
   }
 
-  createSanta(){
-    
-    this.santa = new Santa({
-      scene: this,
-      x: 50,
-      y: 100,
-      key: 'santa'
-    });
-  }
 
   update(): void{
-    this.santa.update();
+    this.stage.santa.update();
     this.checkGameState();
   }
 
   private timeoutFlag : number;
 
   public checkGameState(){
-    if(this.santa.getDead()){
+    if(this.stage.santa.getDead()){
       // timer popup
       this.life.reduceLife();
-      
+      this.stage.santa.showDead();
+      this.physics.pause();
+
       if(this.life.noLife()){
         this.game.sound.stopAll();
 
@@ -115,32 +111,32 @@ export class MainScene extends Phaser.Scene {
         //   this.scene.start("DeadScene");
         // },1000);
       }else{
-        this.scene.pause('MainScene');
-        this.santa.setDead(false);
+        //this.scene.pause('MainScene');
+        this.stage.santa.setDead(false);
+        this.ui.pauseBgm();
         if(!this.timeoutFlag){
           clearTimeout(this.timeoutFlag);
         }
         this.timeoutFlag = setTimeout(() => {
+          this.stage.santa.showRebirth();
           this.resetSanta();
+          this.physics.resume();
           //this.game.sound.resumeAll();
           if(this.ui != null){
             this.ui.rewindBgm();
           }
-          this.scene.resume('MainScene');
         },1000);
       }
     }
   }
 
   public resetSanta(){
-    this.santa.setDead(false);
-    this.santa.placeStartLine();
+    this.stage.placeStartLine();
+    this.stage.santa.setDead(false);
   }
-
-  private paused : boolean = false;
-
   public togglePause(){
-    if(this.paused){
+    if(this.scene.isActive("PauseScene") && this.scene.isVisible("PauseScene")){
+      console.log("resume");
       this.scene.sleep("PauseScene");
       this.scene.moveDown("PauseScene");
       this.scene.resume();
@@ -151,7 +147,10 @@ export class MainScene extends Phaser.Scene {
     }
   }
 
-
-
+  hitEnermy (player, enermy)
+  {
+      this.physics.pause();
+      this.stage.santa.setDead(true);
+  }
 
 }

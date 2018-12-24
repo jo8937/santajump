@@ -56,6 +56,24 @@
             "frameWidth": 100,
             "frameHeight": 20
           }
+        },
+        {
+          "type": "spritesheet",
+          "key": "hukuro",
+          "url": "assets/hukuro.png",
+          "frameConfig": {
+            "frameWidth": 50,
+            "frameHeight": 50
+          }
+        },
+        {
+          "type": "spritesheet",
+          "key": "icespear",
+          "url": "assets/icespear.png",
+          "frameConfig": {
+            "frameWidth": 50,
+            "frameHeight": 50
+          }
         }
         ,
         {

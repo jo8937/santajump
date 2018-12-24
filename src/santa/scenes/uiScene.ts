@@ -156,7 +156,12 @@ export class UIScene extends Phaser.Scene {
   public rewindBgm(){
     if( this.bgm.isPlaying ){
       this.playBgm();
+    }else if( this.bgm.isPaused ){
+      this.playBgm();
     }
+  }
+  public pauseBgm(){
+    this.bgm.pause();
   }
 
   public playBgm() {
