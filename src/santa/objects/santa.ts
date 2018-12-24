@@ -5,6 +5,7 @@ import { Keys } from "../component/keys";
 export class Santa extends Phaser.GameObjects.Sprite {
   private anim: Phaser.Tweens.Tween[];
   private isDead: boolean = false;
+  private isDeading: boolean = false;
   //private cursors: Phaser.Input.Keyboard.CursorKeys;
   private pointers: Phaser.Input.Pointer;
   private jumpKey: Phaser.Input.Keyboard.Key;
@@ -108,10 +109,12 @@ export class Santa extends Phaser.GameObjects.Sprite {
   }
 
   public showDead(){
+    this.isDeading = true;
     this.setTint(0xFF0000);
     this.anims.play("turn");
   }
   public showRebirth(){
+    this.isDeading = false;
     this.setLeft();
     this.setTint(0xFFFFFF);
   }
@@ -181,6 +184,7 @@ export class Santa extends Phaser.GameObjects.Sprite {
       this.isJumping = true;
       this.aBody.setVelocityY(-this.velDefault);
       this.jumpSound.play();
+      this.scene.events.emit("jump");
     }
   }
 
@@ -235,9 +239,16 @@ export class Santa extends Phaser.GameObjects.Sprite {
     //   this.goLeft();
     // }
   }
+  
+  public setDeading(d : boolean){
+    this.isDeading = d
+  }
+  public getDeading(){
+    return this.isDeading;
+  }
 
   public checkState(){
-    if(this.anims.getCurrentKey() != "turn")
+    if(!this.isDeading)
     {
       if(this.aBody.velocity.x > 0){
         this.setRight();
@@ -255,21 +266,10 @@ export class Santa extends Phaser.GameObjects.Sprite {
 
   }
 
-  public checkDead(){
-    if(this.isOffTheScreen()){
-      //this.isDead = true;
-      this.setDead(true);
-    }
-
-  }
 
   update(): void {
     this.checkInput();
     this.checkState();
-    this.checkDead();
   }
 
-  private isOffTheScreen(): boolean {
-    return (this.y > this.scene.sys.canvas.height + this.height);
-  }
 }

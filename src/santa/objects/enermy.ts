@@ -10,6 +10,7 @@ export class Enermy extends Phaser.GameObjects.Sprite {
     super(scene, x, y,key, frame);
     this.key = key;
     this.setOrigin(0, 0);
+    this.setScale(0.5);
 
     scene.physics.world.enable(this);
     let abody = <Phaser.Physics.Arcade.Body>this.body;
@@ -17,7 +18,7 @@ export class Enermy extends Phaser.GameObjects.Sprite {
     abody.setAllowGravity(true);
     //abody.setImmovable(true);
     abody.setBounce(0,0);
-    abody.setSize(abody.width - 30,abody.height)
+    abody.setSize(abody.width/2, abody.height);
     scene.add.existing(this);
     this.initAnimation();
   }

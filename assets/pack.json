@@ -8,8 +8,8 @@
         },
         {
           "type": "image",
-          "key": "scg",
-          "url": "assets/chara-full.png"
+          "key": "endcg",
+          "url": "assets/endcg.png"
         },
         {
           "type": "spritesheet",
@@ -18,6 +18,15 @@
           "frameConfig": {
             "frameWidth": 90,
             "frameHeight": 90
+          }
+        },
+        {
+          "type": "spritesheet",
+          "key": "scg",
+          "url": "assets/scg.png",
+          "frameConfig": {
+            "frameWidth": 400,
+            "frameHeight": 957
           }
         },
         {

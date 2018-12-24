@@ -1,3 +1,5 @@
+import { Santa } from "./santa";
+
 export class Panel extends Phaser.GameObjects.Sprite {
   constructor(
     scene: Phaser.Scene,
@@ -26,6 +28,12 @@ export class Panel extends Phaser.GameObjects.Sprite {
       abody.setImmovable(true);
 
       scene.add.existing(this);
+    }
+
+    update(santa : Santa){
+      if(this.y >= santa.y + this.scene.sys.canvas.height){
+        this.destroy(true);
+      }
     }
   }
   
