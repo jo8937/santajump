@@ -1,6 +1,5 @@
 import { Santa } from "../objects/santa";
 import { Panel } from "../objects/panel";
-import { Status } from "../component/status";
 import { Life } from "../component/life";
 import { Stage } from "../component/stage";
 import { BackGroundScene } from "./backGroundScene";
