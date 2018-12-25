@@ -4,11 +4,11 @@ Santa lost her gift bag in top of the tree?
 
 ## (1) Click to jump and find her bag
 
-![game](https://github.com/jo8937/santajump/blob/master/assets/info-start.png)
+![game](https://github.com/jo8937/santajump/blob/master/assets/info-start0.png)
 
 ## (2) Get gift bag
 
-![game](https://github.com/jo8937/santajump/blob/master/assets/info-goal.png)
+![game](https://github.com/jo8937/santajump/blob/master/assets/info-goal0.png)
 
 ## (3) Ending CG
 
