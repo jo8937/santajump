@@ -27,7 +27,7 @@ export class EndingScene extends Phaser.Scene {
   create(): void {
     this.scene.launch("BackGroundScene");
     this.scene.sendToBack("BackGroundScene");
-    this.scg = this.add.sprite(-this.sys.canvas.width,this.sys.canvas.height / 2,"endcg");
+    this.scg = this.add.sprite(-this.sys.canvas.width,this.sys.canvas.height / 2 + 15,"endcg");
     this.scg.setAlpha(0.6);
     //this.scg.setScale(0.95);
     this.setScgTimeline()
@@ -35,9 +35,10 @@ export class EndingScene extends Phaser.Scene {
   }
 
   private setText(){
+    let startX = 190;
     this.infoText = [
       this.add.text(
-        200,
+        startX,
         30,
         "C L E A R",
         {
@@ -46,9 +47,18 @@ export class EndingScene extends Phaser.Scene {
         }
       ),
       this.add.text(
-        200,
-        60,
-        "Merry Christmas !!",
+        startX,
+        70,
+        "Merry Christmas And",
+        {
+          fontSize: "18px",
+          fill: "#fff"
+        }
+      ),
+      this.add.text(
+        startX,
+        90,
+        "Happy New Year !!",
         {
           fontSize: "18px",
           fill: "#fff"
@@ -61,8 +71,8 @@ export class EndingScene extends Phaser.Scene {
     //this.scg_timeline =  this.tweens.createTimeline({});
     this.tweens.add({
       targets: this.scg,
-      x: this.sys.canvas.width / 2 - 120,               // '+=100'
-      y: this.sys.canvas.height / 2,               // '+=100'
+      x: this.sys.canvas.width / 2 - 125,               // '+=100'
+      y: this.sys.canvas.height / 2 + 15,               // '+=100'
       alpha: 1,
       ease: "Bounce", // 'Cubic', 'Elastic', 'Bounce', 'Back'
       duration: 1000,
@@ -72,7 +82,7 @@ export class EndingScene extends Phaser.Scene {
       onComplete: ((deadScene) => () => {
         deadScene.setText();
         deadScene.input.once('pointerdown', ()=>{
-          location.href="/";
+          location.href="./assets/high-resolution/endcg-high-bg.png";
           //this.scene.start("MainScene");
         });
       })(this)

@@ -1,25 +1,20 @@
 # Game Concept
 
-- Jump and Climing to the top
-- Story
- - Santa lost her gift bag in top of the tree?
-- Start Cond
- - Start line is -100m  
-- Victory Cond
- - Over 0 m 
-- Fail Cond
- - falling down stair
- 
-# Resource Plan
+Santa lost her gift bag in top of the tree?
 
-- BG
- - Cave?
+## (1) Click to jump and find her bag
 
-- CG
- - Standard SCG
-   - Normal
-   - Handle Bag
- - Skill SCG : Santa cross
- - Ending CG
+![game](/jo8937/santajump/tree/master/assets/info-start.png)
 
-- SD
+## (2) Get gift bag
+
+![game](/jo8937/santajump/tree/master/assets/info-goal.png)
+
+## (3) Ending CG
+
+![game](/jo8937/santajump/tree/master/assets/info-ending.png)
+
+# Demo Play
+
+http://game.nostia.com
+
