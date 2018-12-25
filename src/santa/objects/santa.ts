@@ -1,4 +1,4 @@
-declare var gyro: any;
+//declare var gyro: any;
 import { MainScene } from "../scenes/mainScene";
 import { Keys } from "../component/keys";
 
@@ -95,7 +95,7 @@ export class Santa extends Phaser.GameObjects.Sprite {
     this.pointers = scene.input.activePointer;
     //params.scene.input.keyboard.addKeyCapture([ Phaser.Input.Keyboard. .LEFT, Phaser.Keyboard.RIGHT, Phaser.Keyboard.SPACEBAR ]);
 
-    this.addGyro();
+    //this.addGyro();
     scene.input.on("pointerdown", pointer => {
       this.isPointerDown = true;
     });
@@ -152,23 +152,23 @@ export class Santa extends Phaser.GameObjects.Sprite {
   }
 
 
-  public addGyro(): void {
-    if (gyro) {
-      gyro.frequency = 10;
-      // start gyroscope detection
-      gyro.startTracking(
-        (function(parent) {
-          // updating player velocity
-          return function(o) {
-            if (o && o.gamma) {
-              parent.gyroX = o.gamma;
-            }
-          };
-          //player.body.velocity.y += o.beta/20;
-        })(this)
-      );
-    }
-  }
+  // public addGyro(): void {
+  //   if (gyro) {
+  //     gyro.frequency = 10;
+  //     // start gyroscope detection
+  //     gyro.startTracking(
+  //       (function(parent) {
+  //         // updating player velocity
+  //         return function(o) {
+  //           if (o && o.gamma) {
+  //             parent.gyroX = o.gamma;
+  //           }
+  //         };
+  //         //player.body.velocity.y += o.beta/20;
+  //       })(this)
+  //     );
+  //   }
+  // }
 
   private inputLeft(){
     return this.leftKey.isDown || this.gyroX < 0;
