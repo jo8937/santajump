@@ -9,7 +9,6 @@ import { Hukuro } from "../objects/hukuro";
 export class MainScene extends Phaser.Scene {
   private phaserSprite: Phaser.GameObjects.Sprite;
 
-  public mapHeight : integer = 2000;
   // variables
   private timer: Phaser.Time.TimerEvent;
 
@@ -22,6 +21,7 @@ export class MainScene extends Phaser.Scene {
 
   private canvas_height : number = 0;
   private canvas_width : number = 0;
+
 
   constructor() {
     super({
@@ -83,7 +83,7 @@ export class MainScene extends Phaser.Scene {
   private setCamera(){
     this.cameras.main.setSize(this.canvas_width,this.canvas_height);
     this.cameras.main.startFollow(this.stage.santa);
-    this.cameras.main.setBounds(0, -this.mapHeight, this.canvas_width,this.canvas_height+this.mapHeight);
+    this.cameras.main.setBounds(0, -this.stage.totalHeight, this.canvas_width, this.canvas_height+this.stage.totalHeight);
   }
 
 
@@ -126,6 +126,7 @@ export class MainScene extends Phaser.Scene {
           callback: () => {
             this.stage.santa.showRebirth();
             this.resetSanta();
+            this.resetPanel();
             this.physics.resume();
             //this.game.sound.resumeAll();
             if(this.ui != null){
@@ -152,9 +153,28 @@ export class MainScene extends Phaser.Scene {
   }
 
   public resetSanta(){
+    //this.stage.placeStartLine();
+    //this.stage.placeSantaLastPanel();
+    for(let panelobject of this.stage.panels.getChildren()){
+      let panel = <Panel> panelobject;
+      if( (this.ui.score == panel.floor) && panel.landed ){
+        this.stage.santa.setPosition(panel.x + 25, panel.y - 100);
+        return;
+      }
+    }
+  
     this.stage.placeStartLine();
     this.stage.santa.setDead(false);
   }
+
+  public resetPanel(){
+    for(let panelobject of this.stage.panels.getChildren()){
+      let panel = <Panel> panelobject;
+      panel.setActive(true);
+      panel.setVisible(true);
+    }
+  }
+
   public togglePause(){
     if(this.scene.isActive("PauseScene") && this.scene.isVisible("PauseScene")){
       console.log("resume");
@@ -208,18 +228,30 @@ export class MainScene extends Phaser.Scene {
   ////
   initEventListener(){
     var eventEmitter = this.events;
-    //eventEmitter.on('jump', this.checkFloor, this);
+    eventEmitter.on('jump', this.checkOutOfBound, this);
   }
 
   checkOutOfBound ()
   {
+      let removeList : Panel[] = null;
       for(let panelobject of this.stage.panels.getChildren()){
           let panel = <Panel> panelobject;
           if( panel.y > this.stage.santa.y + this.canvas_height){
-            panel.destroy(true);
-          
-          }         
+            
+            if(removeList == null){
+              removeList = [];
+            }
+            removeList.push(panel);
+          }
       }
+
+      if(removeList != null){
+        for(let p of removeList){
+          console.log(p.floor);
+          p.destroy();
+        }
+      }
+
   }
 
 

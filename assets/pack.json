@@ -7,9 +7,13 @@
           "url": "assets/bg1.png"
         },
         {
-          "type": "image",
+          "type": "spritesheet",
           "key": "endcg",
-          "url": "assets/endcg.png"
+          "url": "assets/endcg.png",
+          "frameConfig": {
+            "frameWidth": 1024,
+            "frameHeight": 1024
+          }
         },
         {
           "type": "spritesheet",
