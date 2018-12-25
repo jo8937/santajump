@@ -35,7 +35,7 @@ export class Stage {
   // private floorWidth : number = 400;
   private floorTileWidth : number = 25;
   private floorTileHeight : number = 50;
-
+  private totalPanelFloor : number = 0;
   public getFloorHeight(){
     return this.floorTileHeight;
   }
@@ -86,7 +86,7 @@ export class Stage {
   }
  
   public getTotalFloor(){
-    return this.stage.length;
+    return this.totalPanelFloor;
   }
 
   public createStage(){
@@ -109,15 +109,19 @@ export class Stage {
   
     //   this.generateOnePanel(x,y, 0)  
     // }
+    let panelYClount = 1
     let startY = this.scene.sys.canvas.height - panelHeight;
     for(let y = 0; y < this.stage.length; y++){
-      let line = this.stage[this.stage.length - 1 - y];
+      let floor = y+1;
+      let line = this.stage[this.stage.length - y - 1];
       let panelY = startY - (this.floorTileHeight * y);
+      let hasPanel = false;
       for(let x = 0; x < line.length; x++){
         let panelX = this.floorTileWidth * x;
         let objectNumber = line[x];
         if( objectNumber == StageObject.PANEL){
-          this.placePanel(panelX, panelY, 0);
+          this.placePanel(panelX, panelY, 0, panelYClount);
+          hasPanel = true;
         }else if( objectNumber == StageObject.SANTA){
           this.placeSanta(panelX, panelY);
         }else if( objectNumber == StageObject.ICE){
@@ -126,7 +130,11 @@ export class Stage {
           this.placeHukuro(panelX, panelY);
         }
       }
+      if(hasPanel){
+        panelYClount++;
+      }
     }
+    this.totalPanelFloor = panelYClount - 1;
   }
 
   
@@ -149,10 +157,10 @@ export class Stage {
     this.santa.setPosition(this.santa.width, this.scene.sys.canvas.height - this.santa.height - (panelHeight * 2));
   }
   
-  private placePanel(x, y, frame): Panel {
+  private placePanel(x, y, frame, floor): Panel {
     // create a pipe at the position x and y
     let panel = new Panel(this.scene, x, y,"panel", frame);
-
+    panel.floor = floor;
     // add pipe to group
     this.panels.add(panel);
     return panel;

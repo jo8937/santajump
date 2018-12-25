@@ -6,6 +6,7 @@
 
 export class DeadScene extends Phaser.Scene {
   private infoText: Phaser.GameObjects.Text[];
+  private scg: Phaser.GameObjects.Sprite;
 
   constructor() {
     super({
@@ -18,6 +19,8 @@ export class DeadScene extends Phaser.Scene {
   }
 
   create(): void {
+    this.scg = this.add.sprite(this.sys.canvas.width / 2,this.sys.canvas.height / 2,"scg",3);
+    
     this.infoText = [
       this.add.text(
         this.sys.canvas.width / 2,
@@ -41,6 +44,8 @@ export class DeadScene extends Phaser.Scene {
 
     this.input.once('pointerdown', ()=>{
       console.log("pwn");
+      this.scene.stop("BackGroundScene");
+      this.scene.stop("UIScene");
       this.scene.stop("DeadScene");
       this.scene.start("MainScene");
     });

@@ -199,13 +199,15 @@ export class UIScene extends Phaser.Scene {
   }
 
   updateScore(score : number) {
-    this.score = score;
-    this.scoreText.setText("" + this.score);
+    if(this.score < score){
+      this.score = score;
+      this.scoreText.setText("" + this.score);
+    }
   }
 
   
   initScore() {
-    this.score += 1;
+    this.score = 0;
     this.scoreText.setText("" + this.score);
     this.scoreMaxText.setText("/" + this.main.stage.getTotalFloor());
   }

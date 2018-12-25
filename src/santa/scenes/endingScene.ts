@@ -21,6 +21,8 @@ export class EndingScene extends Phaser.Scene {
   }
 
   create(): void {
+    this.scene.launch("BackGroundScene");
+    this.scene.sendToBack("BackGroundScene");
     this.bg = this.add.image(this.sys.canvas.width / 2,this.sys.canvas.height / 2,"endcg");
     
     this.infoText = [

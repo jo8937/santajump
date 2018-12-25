@@ -66,7 +66,7 @@ export class MainScene extends Phaser.Scene {
     this.stage.createStage();
     //  this.stage.generatePanels();
 
-    this.physics.add.collider(this.stage.santa, this.stage.panels);
+    this.physics.add.collider(this.stage.santa, this.stage.panels, this.hitPanelLanding, null, this);
     this.physics.add.collider(this.stage.santa, this.stage.objects, this.hitPresent, null, this);
 
     this.physics.add.collider(this.stage.objects, this.stage.panels);
@@ -193,34 +193,32 @@ export class MainScene extends Phaser.Scene {
       });
   }
 
+  hitPanelLanding(player : 	Phaser.GameObjects.GameObject, panel :	Phaser.GameObjects.GameObject)
+  {
+    let p = <Panel> panel;
+    if(!p.landed){
+      let santa =  <Santa> player;
+      if(p.y >= (santa.y + santa.height / 2)){
+        p.landed = true;
+        this.ui.updateScore(p.floor);
+      }
+    }
+  }
+
+  ////
   initEventListener(){
     var eventEmitter = this.events;
-    eventEmitter.on('jump', this.checkFloor, this);
-  }
-  
-  checkFloor ()
-  {
-    this.ui.updateScore(
-      Math.floor(
-      (
-        (this.stage.getFloorTotalHeight() - this.stage.santa.y / this.stage.getFloorHeight()))
-      /
-      this.stage.getTotalFloor()
-      )
-      );
+    //eventEmitter.on('jump', this.checkFloor, this);
   }
 
   checkOutOfBound ()
   {
-    console.log(this.stage.santa.y); 
       for(let panelobject of this.stage.panels.getChildren()){
           let panel = <Panel> panelobject;
           if( panel.y > this.stage.santa.y + this.canvas_height){
             panel.destroy(true);
-
-            
-          }
-          //console.log(this.stage.santa.y);          
+          
+          }         
       }
   }
 
