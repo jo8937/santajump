@@ -11,7 +11,7 @@ enum StageObject{
   BLANK = 0,
   PANEL = 1,
   ICE = 2,
-  SANTA = 8,
+  SANTA = 7,
   HUKURO = 9,
 }
 
@@ -89,7 +89,7 @@ export class Stage {
 
         [0,0,0,0,  0,0,0,0,  0,0,0,0, 0,0,0,0],
         [0,0,0,0,  0,0,0,0,  0,0,0,0, 0,0,0,0],
-        [0,0,0,0,  0,0,0,0,  0,0,0,0, 0,0,0,0],
+        [0,0,0,0,  0,0,0,2,  0,0,0,0, 0,0,0,0],
 
         [0,0,0,0,  0,0,0,0,  0,0,0,0, 0,0,0,0],
         [0,0,0,0,  1,0,0,0,  1,0,0,0, 0,0,0,0],
@@ -119,8 +119,8 @@ export class Stage {
         [0,0,0,0,  0,0,0,0,  0,0,0,0, 0,0,0,0],
         [0,0,0,0,  0,0,0,0,  0,0,0,0, 0,0,0,0],
 
-        [0,0,0,0,  0,0,0,0,  0,1,0,0, 0,0,0,0],
-        [0,0,0,0,  0,0,0,0,  0,0,0,0, 0,0,0,0],
+        [0,0,0,0,  0,0,0,0,  1,0,0,0, 0,0,0,0],
+        [0,0,0,0,  0,0,0,2,  0,0,0,0, 0,0,0,0],
 
         [0,0,0,0,  0,1,0,0,  0,0,0,0, 0,0,0,0],
         [0,0,0,0,  0,0,0,0,  0,0,0,0, 0,0,0,0],
@@ -138,7 +138,7 @@ export class Stage {
         [0,0,0,0,  1,0,0,0,  0,0,0,0, 0,0,1,0],
 
         [0,0,0,0,  0,0,0,0,  0,0,0,0, 0,0,0,0],
-        [0,8,0,0,  0,0,0,0,  0,1,0,0, 0,0,0,0],
+        [0,7,0,0,  0,0,0,0,  0,1,0,0, 0,0,0,0],
 
         [0,0,0,0,  0,0,0,0,  0,0,0,0, 0,0,0,0],
         [1,0,0,0,  1,0,0,0,  0,0,0,0, 0,0,0,0],
@@ -216,6 +216,14 @@ export class Stage {
   public placeSanta(x :number, y:number){
     this.santa = new Santa(this.scene,x,y,"santa");
     this.santaStart = {x : x, y: y};
+  }
+
+  public placeSantaLastLanded(){
+    if(this.santa.lastLandedPanelPos.x == 0 && this.santa.lastLandedPanelPos.y == 0){
+      this.placeStartLine();
+    }else{
+      this.santa.setPosition(this.santa.lastLandedPanelPos.x, this.santa.lastLandedPanelPos.y - this.santa.height - 10);
+    }
   }
 
   public placeStartLine(){

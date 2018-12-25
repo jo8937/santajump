@@ -12,18 +12,17 @@ export class BackGroundScene extends Phaser.Scene {
 
   init(): void {
     this.bg = null;
-    console.log("bg1");
 
   }
 
   create(): void {
     this.createBackground();
     this.createSnows();
-    console.log("bg3");
+    
   }
   
   public createBackground(){
-    console.log("bg4");
+    
     this.bg = this.add.tileSprite(this.sys.canvas.width / 2, this.sys.canvas.height / 2, this.sys.canvas.width, this.sys.canvas.height, "bg");
     //let chara = this.add.image(200,0,"scg",2);
     //let panels = this.physics.add.staticGroup();

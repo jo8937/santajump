@@ -153,17 +153,8 @@ export class MainScene extends Phaser.Scene {
   }
 
   public resetSanta(){
-    //this.stage.placeStartLine();
-    //this.stage.placeSantaLastPanel();
-    for(let panelobject of this.stage.panels.getChildren()){
-      let panel = <Panel> panelobject;
-      if( (this.ui.score == panel.floor) && panel.landed ){
-        this.stage.santa.setPosition(panel.x + 25, panel.y - 100);
-        return;
-      }
-    }
-  
-    this.stage.placeStartLine();
+    this.stage.placeSantaLastLanded();
+    this.stage.santa.startMutekiTimer();
     this.stage.santa.setDead(false);
   }
 
@@ -191,8 +182,12 @@ export class MainScene extends Phaser.Scene {
   hitEnermy (player : 	Phaser.GameObjects.GameObject, enermy : 	Phaser.GameObjects.GameObject)
   {
       this.physics.pause();
-      this.stage.santa.setDead(true);
-      enermy.destroy(true);
+      if(this.stage.santa.isMuteki){
+        this.physics.resume();
+      }else{
+        enermy.destroy(true);
+        this.stage.santa.setDead(true);
+      }
   }
 
   hitPresent (player : 	Phaser.GameObjects.GameObject, hukuro : 	Phaser.GameObjects.GameObject)
@@ -220,6 +215,8 @@ export class MainScene extends Phaser.Scene {
       let santa =  <Santa> player;
       if(p.y >= (santa.y + santa.height / 2)){
         p.landed = true;
+        santa.lastLandedPanelPos.x = p.x;
+        santa.lastLandedPanelPos.y = p.y;
         this.ui.updateScore(p.floor);
       }
     }
@@ -247,7 +244,7 @@ export class MainScene extends Phaser.Scene {
 
       if(removeList != null){
         for(let p of removeList){
-          console.log(p.floor);
+          //console.log(p.floor);
           p.destroy();
         }
       }

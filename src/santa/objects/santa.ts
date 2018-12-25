@@ -12,6 +12,8 @@ export class Santa extends Phaser.GameObjects.Sprite {
   private leftKey: Phaser.Input.Keyboard.Key;
   private rightKey: Phaser.Input.Keyboard.Key;
 
+  public isMuteki: boolean = false;
+
   private isJumping: boolean = false;
   private isPointerDown: boolean = false;
 
@@ -26,6 +28,8 @@ export class Santa extends Phaser.GameObjects.Sprite {
   private aScene: MainScene = null;
 
   private jumpSound : Phaser.Sound.BaseSound;
+
+  public lastLandedPanelPos: Vector2Like = { x: 0, y: 0 };
 
   private movable : boolean = true;
   constructor(
@@ -266,6 +270,22 @@ export class Santa extends Phaser.GameObjects.Sprite {
 
   }
 
+
+  public startMutekiTimer(){
+    this.isMuteki = true;
+    let oncomp = ()=>{
+      this.isMuteki = false;
+      this.setAlpha(1);
+    };
+    this.scene.tweens.add({
+      targets: this,
+      alpha: 0.1,
+      yoyo:false,
+      repeat:3,
+      duration: 500,
+      onComplete: oncomp
+    });
+  }
 
   update(): void {
     this.checkInput();
