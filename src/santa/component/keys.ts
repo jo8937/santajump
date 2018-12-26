@@ -5,4 +5,5 @@ export enum Keys{
     CANVAS_HEIGHT,
     LIFE,
     MAX_LIFE,
+    TOTAL_SECOND,
 }

@@ -19,7 +19,9 @@ export class UIScene extends Phaser.Scene {
 
   private scoreText: Phaser.GameObjects.Text;
   private scoreMaxText: Phaser.GameObjects.Text;
-  private heightText: Phaser.GameObjects.Text;
+  private minuteText: Phaser.GameObjects.Text;
+  private splitText: Phaser.GameObjects.Text;
+  private secondText: Phaser.GameObjects.Text;
 
   // private debugText: Phaser.GameObjects.Text;
   private bgm: Phaser.Sound.BaseSound;
@@ -172,10 +174,21 @@ export class UIScene extends Phaser.Scene {
 
   createScore(): void {
     const top: number = 20;
-    this.heightText = this.add.text(10, 60, "test version", {
+    this.minuteText = this.add.text(10, 60, "00", {
       fontSize: "12px",
       fill: "#efefef"
     });
+
+    this.splitText = this.add.text(30, 60, ":", {
+      fontSize: "12px",
+      fill: "#efefef"
+    });
+
+    this.secondText = this.add.text(38, 60, "00", {
+      fontSize: "12px",
+      fill: "#efefef"
+    });
+
 
     this.scoreText = this.add.text(
       this.sys.canvas.width / 2 - 55,
@@ -233,5 +246,9 @@ export class UIScene extends Phaser.Scene {
       this.bgm.play();
       this.bgmbtn.setFrame(0);
     }
+  }
+
+  public setSecond(totalSecond : number){
+    this.secondText.setText(""+totalSecond);
   }
 }

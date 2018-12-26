@@ -3,6 +3,8 @@
  * 
  * 
  */
+import axios from 'axios';
+import { Keys } from '../component/keys';
 
 export class EndingScene extends Phaser.Scene {
   private infoText: Phaser.GameObjects.Text[];
@@ -12,8 +14,8 @@ export class EndingScene extends Phaser.Scene {
   private scg: Phaser.GameObjects.Sprite;
   //private scg_timeline: Phaser.Tweens.Timeline;
   //private scg_tween: Phaser.Tweens.Tween;
-
-
+  private XOR_KEY : number = 99181225;
+  
   constructor() {
     super({
       key: "EndingScene"
@@ -36,10 +38,11 @@ export class EndingScene extends Phaser.Scene {
 
   private setText(){
     let startX = 190;
+    let startY = 30;
     this.infoText = [
       this.add.text(
         startX,
-        30,
+        startY,
         "C L E A R",
         {
           fontSize: "34px",
@@ -48,25 +51,57 @@ export class EndingScene extends Phaser.Scene {
       ),
       this.add.text(
         startX,
-        70,
-        "Merry Christmas And",
+        startY+35,
+        "Time Attack : " + this.getTotalSecond() + "s",
         {
-          fontSize: "18px",
+          fontSize: "12px",
           fill: "#fff"
         }
       ),
       this.add.text(
         startX,
-        90,
+        startY+55,
+        "Merry Christmas and",
+        {
+          fontSize: "18px",
+          fill: "#fff"
+        }
+      )
+      ,
+      this.add.text(
+        startX,
+        startY+75,
         "Happy New Year !!",
         {
           fontSize: "18px",
           fill: "#fff"
         }
       )
+      ,
+      this.add.text(
+        startX,
+        startY+95,
+        "",
+        {
+          fontSize: "12px",
+          fill: "#0ff",
+          align: "left",
+          wordWrap: { width: 200, useAdvancedWrap: true }
+        }
+      )
       ];
+      
   }
 
+  private getTotalSecond() : number{
+    let total_second = 9999;
+    let total_second_obj = this.game.registry.get(Keys.TOTAL_SECOND.toString());
+    if(total_second_obj!= null){
+      total_second = (<number> total_second_obj);
+    }
+    return total_second;
+  }
+  
   private setScgTimeline() {
     //this.scg_timeline =  this.tweens.createTimeline({});
     this.tweens.add({
@@ -82,8 +117,20 @@ export class EndingScene extends Phaser.Scene {
       onComplete: ((deadScene) => () => {
         deadScene.setText();
         deadScene.input.once('pointerdown', ()=>{
-          location.href="./assets/high-resolution/endcg-high-bg.png";
+          let errorCallback = (err) => {
+            this.infoText[this.infoText.length - 1].setText(err);
+          }
           //this.scene.start("MainScene");
+          axios.post('/santajump_regist', {
+            tm: this.XOR_KEY ^ this.getTotalSecond()
+          }).then(function (response) {
+            console.log(response);
+            location.href="./assets/high-resolution/endcg-high-bg.png";
+          }).catch(function (error) {
+            console.log(error);
+            errorCallback(error);
+          });
+
         });
       })(this)
     });

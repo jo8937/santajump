@@ -5,12 +5,14 @@ import { Stage } from "../component/stage";
 import { BackGroundScene } from "./backGroundScene";
 import { UIScene } from "./uiScene";
 import { Hukuro } from "../objects/hukuro";
+import { Keys } from "../component/keys";
 
 export class MainScene extends Phaser.Scene {
   private phaserSprite: Phaser.GameObjects.Sprite;
 
   // variables
   private timer: Phaser.Time.TimerEvent;
+  private totalSecond : number = 0;
 
   public life : Life;
 
@@ -30,11 +32,10 @@ export class MainScene extends Phaser.Scene {
   }
 
   init(): void {
-    // objects
-    
+
     // variables
     this.timer = undefined;
-
+    this.totalSecond = 0;
     this.life = null;
 
     this.bg = null;
@@ -78,6 +79,7 @@ export class MainScene extends Phaser.Scene {
 
     this.createUI();
     this.initEventListener();
+    this.setTimer();
   }
 
   private setCamera(){
@@ -195,6 +197,7 @@ export class MainScene extends Phaser.Scene {
       this.physics.pause();
       this.stage.santa.setDeading(true);
       this.stage.santa.anims.play("turn");
+      this.game.registry.set(Keys.TOTAL_SECOND.toString() , 1 + this.totalSecond);
       this.time.addEvent({
         delay:1000,
         callback: () => {
@@ -251,5 +254,21 @@ export class MainScene extends Phaser.Scene {
 
   }
 
+  setTimer(){
+    //this.timer = this.time.delayedCall(200,this.updateTimeAttack,[],this);
+    this.timer = this.time.addEvent({
+      delay: 1000,
+      callback: this.updateTimeAttack,
+      loop:true,
+      callbackScope: this
+    });
+  }
 
+  updateTimeAttack(){
+    if(this.timer != null){
+      this.totalSecond++;
+      this.ui.setSecond(this.totalSecond);
+      //console.log( this.timer.getRepeatCount() );
+    }
+  }
 }
