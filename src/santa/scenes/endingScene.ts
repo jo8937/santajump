@@ -121,11 +121,11 @@ export class EndingScene extends Phaser.Scene {
             this.infoText[this.infoText.length - 1].setText(err);
           }
           //this.scene.start("MainScene");
-          axios.post('/santajump_regist', {
+          axios.post('/santaserver/regist', {
             tm: this.XOR_KEY ^ this.getTotalSecond()
           }).then(function (response) {
             console.log(response);
-            location.href="./assets/high-resolution/endcg-high-bg.png";
+            location.href="/santaserver/ending";
           }).catch(function (error) {
             console.log(error);
             errorCallback(error);

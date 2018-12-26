@@ -172,43 +172,48 @@ export class UIScene extends Phaser.Scene {
     this.bgmbtn.setFrame(0);
   }
 
+  createTimePanel(top : number, left : number){
+    this.minuteText = this.add.text(left, top, "00", {
+      fontSize: "14px",
+      fill: "#efefef"
+    });
+
+    this.splitText = this.add.text(left+18, top, ":", {
+      fontSize: "14px",
+      fill: "#efefef"
+    });
+
+    this.secondText = this.add.text(left+28, top, "00", {
+      fontSize: "14px",
+      fill: "#efefef"
+    });
+  }
+
   createScore(): void {
-    const top: number = 20;
-    this.minuteText = this.add.text(10, 60, "00", {
-      fontSize: "12px",
-      fill: "#efefef"
-    });
-
-    this.splitText = this.add.text(30, 60, ":", {
-      fontSize: "12px",
-      fill: "#efefef"
-    });
-
-    this.secondText = this.add.text(38, 60, "00", {
-      fontSize: "12px",
-      fill: "#efefef"
-    });
-
-
+    const top: number = 10;
+    const left : number = this.sys.canvas.width / 2 - 50;
     this.scoreText = this.add.text(
-      this.sys.canvas.width / 2 - 55,
+      left
+      ,
       top,
       "x",
       {
-        fontSize: "28px",
-        fill: "#efefef"
+        fontSize: "24px",
+        fill: "#55ccdd"
       }
     );
 
     this.scoreMaxText = this.add.text(
-      this.sys.canvas.width / 2 - 20,
+      left + 30,
       top,
       "x",
       {
-        fontSize: "28px",
-        fill: "#aaaaff"
+        fontSize: "24px",
+        fill: "#55ccdd"
       }
     );
+    
+    this.createTimePanel(top + 25, left + 12);
   }
 
   updateScore(score : number) {
@@ -249,6 +254,11 @@ export class UIScene extends Phaser.Scene {
   }
 
   public setSecond(totalSecond : number){
-    this.secondText.setText(""+totalSecond);
+    let minute = Math.floor(totalSecond / 60);
+    let second = totalSecond % 60;
+    if(minute > 0){
+      this.minuteText.setText(minute.toString());  
+    }
+    this.secondText.setText(second.toString());
   }
 }
