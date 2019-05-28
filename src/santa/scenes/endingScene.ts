@@ -3,7 +3,7 @@
  * 
  * 
  */
-import axios from 'axios';
+//import axios from 'axios';
 import { Keys } from '../component/keys';
 
 export class EndingScene extends Phaser.Scene {
@@ -120,7 +120,12 @@ export class EndingScene extends Phaser.Scene {
           let errorCallback = (err) => {
             this.infoText[this.infoText.length - 1].setText(err);
           }
+          this.scene.stop("BackGroundScene");
+          this.scene.stop("UIScene");
+          this.scene.stop("DeadScene");
+          this.scene.start("MainScene");
           //this.scene.start("MainScene");
+          /*
           axios.post('/santaserver/regist', {
             tm: this.XOR_KEY ^ this.getTotalSecond()
           }).then(function (response) {
@@ -130,7 +135,7 @@ export class EndingScene extends Phaser.Scene {
             console.log(error);
             errorCallback(error);
           });
-
+          */
         });
       })(this)
     });
