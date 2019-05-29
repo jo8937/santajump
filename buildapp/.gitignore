@@ -27,4 +27,5 @@ yarn-error.log*
 dummy.png
 
 # just copy files
-/www
+/www/*/
+/plugins

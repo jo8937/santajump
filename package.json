@@ -24,8 +24,8 @@
   "scripts": {
     "dev": "webpack --mode development && webpack-dev-server --mode development",
     "build": "webpack --mode production",
-    "cpapp": "cpx build/** buildapp/www && cpx assets/** buildapp/www/assets",
-    "buildapp": "build && copyapp"
+    "cp": "cpx -C -v build/** buildapp/www/build && cpx -C -v assets/** buildapp/www/assets && cpx -C -v static/** buildapp/www/static",
+    "buildapp": "npm run build && npm run cp && cd buildapp && cordova build android"
   },
   "repository": {
     "type": "git",

@@ -49,7 +49,16 @@ export class BootScene extends Phaser.Scene {
     this.load.audio('bgm', ['./assets/bgm.mp3']);
     this.load.audio('jump', ['./assets/jump.mp3']);
 
-    
+    // setTimeout(function(f){
+    //   return () => {
+    //     try{
+    //      f.progressBar.destroy();
+    //      f.loadingBar.destroy();      
+    //     }catch(e){
+    //       console.log(e);
+    //     }
+    //   }
+    // }(this),5000);
   }
 
   update(): void {
